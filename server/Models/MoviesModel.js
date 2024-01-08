@@ -82,4 +82,4 @@ const moviesSchema = mongoose.Schema(
   }
 );
 
-export default mongoose.model("Movies", moviesSchema);
+export default mongoose.model("Movie", moviesSchema);
