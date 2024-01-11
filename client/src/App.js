@@ -20,11 +20,11 @@ import Users from './Screens/Dashboard/Admin/Users';
 import AddMovie from './Screens/Dashboard/Admin/AddMovie';
 import ScrollOnTop from './ScrollOnTop';
 import Categories from './Screens/Dashboard/Admin/Categories';
-import { getAllMoviesService, useMoviesListReducer } from './Reducers/Movies/AllMovies';
-import { getAllMoviesAction } from './Reducers/MoviesActions';
+import { getAllMoviesService, useMoviesListReducer } from './Api/Movies/AllMovies';
+import { getAllMoviesAction } from './Api/MoviesActions';
 import { UserContext, UserProvider } from './Context/Context';
-import { getFavoriteMoviesAction } from './Reducers/UserActions';
-import { useUserFavoriteMoviesReducer } from './Reducers/User/FavoriteMovies';
+import { getFavoriteMoviesAction } from './Api/UserActions';
+import { useUserFavoriteMoviesReducer } from './Api/User/FavoriteMovies';
 function App() {
   Aos.init();
   // const [categoriesState, categoriesDispatch] = useGetAllCategoriesReducer()

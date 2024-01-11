@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { useUserFavoriteMoviesReducer } from "../Reducers/User/FavoriteMovies";
+import { useUserFavoriteMoviesReducer } from "../Api/User/FavoriteMovies";
 
 
 export const UserContext = createContext();

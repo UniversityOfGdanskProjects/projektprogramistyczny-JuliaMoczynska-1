@@ -6,13 +6,14 @@ import { FiLogIn } from "react-icons/fi";
 import { LoginValidation } from "../Components/Validation/UserValidation";
 import { InlineError } from "../Components/Notfications/Error";
 import { useFormik } from "formik";
-import { useLoginReducer, loginService } from "../Reducers/User/Login";
+import { useLoginReducer, loginService } from "../Api/User/Login";
 import toast from "react-hot-toast";
 import { UserContext } from "../Context/Context";
 
 function Login() {
   const navigate = useNavigate();
   const [state, dispatch] = useLoginReducer();
+  const { setUserInfo } = useContext(UserContext)
 
   const formik = useFormik({
     initialValues: {
@@ -26,6 +27,7 @@ function Login() {
         const data = await loginService(values);
         console.log("Uzytkownik zalogowany")
         dispatch({ type: "USER_LOGIN_SUCCESS", payload: data });
+        setUserInfo(data)
       } catch (error) {
         console.log("Odrzucenie logowania")
         dispatch({ type: "USER_LOGIN_FAIL", payload: error });
@@ -46,10 +48,8 @@ function Login() {
   useEffect(() => {
     if (userInfo?.isAdmin) {
       navigate("/dashboard");
-      // setUserInfo(userInfo)
     } else if (userInfo) {
       navigate("/profile");
-      // setUserInfo(userInfo)
     }
     if (isSuccess) {
       toast.success(`Welcome back ${userInfo?.fullName}`);

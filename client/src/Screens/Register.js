@@ -7,8 +7,8 @@ import { InlineError } from "../Components/Notfications/Error";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { RegisterValidation } from "../Components/Validation/UserValidation";
-import { useRegisterReducer, registerService } from "../Reducers/User/Register.js"; 
-import { useLoginReducer } from "../Reducers/User/Login.js"; 
+import { useRegisterReducer, registerService } from "../Api/User/Register.js"; 
+import { useLoginReducer } from "../Api/User/Login.js"; 
 
 function Register() {
     const navigate = useNavigate();

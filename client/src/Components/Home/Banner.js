@@ -8,14 +8,16 @@ import Loader from "../Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
 // import { useDispatch, useSelector } from "react-redux";
 import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
-import { useUserFavoriteMoviesReducer } from "../../Reducers/User/FavoriteMovies";
+import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
 import { UserContext } from "../../Context/Context";
-import { useUserLikeMovieReducer } from "../../Reducers/User/LikeMovie";
+import { useUserLikeMovieReducer } from "../../Api/User/LikeMovie";
 
 const Swipper = ({ sameClass, movies }) => {
-    const  [likedMovies, likedMoviesDispatch] = useUserFavoriteMoviesReducer();
-    const [ isLoading, isLoadingDispatch ] = useUserLikeMovieReducer();
-    // const dispatch = useDispatch();
+    const  [favMoviesState, favMoviesDispatch] = useUserFavoriteMoviesReducer();
+    const { isLoadingFav,  isErrorFav, favMovies } = favMoviesState
+    const [ likedMoviesState, likedMoviesDispatch ] = useUserLikeMovieReducer();
+    const { isLoadingLiked,  isErrorLiked, isSuccess } = likedMoviesState
+
     const { userInfo } = useContext(UserContext)
 
     // if liked function
@@ -52,14 +54,14 @@ const Swipper = ({ sameClass, movies }) => {
                     to={`/movie/${movie?._id}`}
                     className="bg-subMain hover:text-main transitions text-white px-8 py-3 rounded font-medium sm:text-sm text-xs"
                 >
-                    Watch
+                    More
                 </Link>
                 <button
-                    onClick={() => LikeMovie(movie, isLoadingDispatch, userInfo)}
-                    disabled={isLiked(movie) || null}
+                    onClick={() => LikeMovie(movie, likedMoviesDispatch, favMoviesDispatch, userInfo)}
+                    disabled={isLiked(movie) || isLoadingLiked}
                     className={`bg-white
-                ${isLiked(movie) ? "text-subMain" : "text-white"}
-                hover:text-subMain transitions  px-4 py-3 rounded text-sm bg-opacity-30`}
+                      ${isLiked(movie) ? "text-subMain" : "text-white"}
+                      hover:text-subMain transitions  px-4 py-3 rounded text-sm bg-opacity-30`}
                 >
                     <FaHeart />
                 </button>

@@ -17,7 +17,7 @@ import {
 } from "../Data/FilterData";
 import { useParams } from "react-router-dom";
 import { ErrorsAction } from "../Protection";
-import { getAllMoviesService, useMoviesListReducer } from "../Reducers/Movies/AllMovies";
+import { getAllMoviesService, useMoviesListReducer } from "../Api/Movies/AllMovies";
 // import { getAllMoviesAction } from "../Actions/Actions";
 
 function MoviesPage() {

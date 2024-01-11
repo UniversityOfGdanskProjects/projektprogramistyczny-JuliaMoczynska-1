@@ -1,37 +1,63 @@
-import React from "react";
-import Layout from "../Layout/Layout";
-import { Movies } from "../Data/MovieData";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BsFillCollectionPlayFill } from "react-icons/bs";
-import MovieInfo from "../Components/Single/MovieInfo";
 import MovieCasts from "../Components/Single/MovieCasts";
+import MovieInfo from "../Components/Single/MovieInfo";
 import MovieRates from "../Components/Single/MovieRates";
 import Titles from "../Components/Titles";
+import Layout from "../Layout/Layout";
+import { BsCollectionFill } from "react-icons/bs";
 import Movie from "../Components/Movie";
+import { getMovieByIdAction } from "../Api/MoviesActions";
+import Loader from "../Components/Notfications/Loader";
+import { RiMovie2Line } from "react-icons/ri";
+import { useGetMovieDetailsReducer } from "../Api/Movies/ByIdMovie";
+import { useMoviesListReducer } from "../Api/Movies/AllMovies";
 
 function SingleMovie() {
-    const {id} = useParams()
-    const movie = Movies.find((m) => (
-        m.name === id
-    ))
-    const RelatedMovies = Movies.filter((m) => m.category === movie.category && m.name !== id)
-    return(
+    const [modalOpen, setModalOpen] = useState(false);
+    const { id } = useParams();
+    const sameClass = "w-full gap-6 flex-colo min-h-screen";
+    const [movieDetailsState, movieDetailsDispatch] = useGetMovieDetailsReducer()
+    const { isLoading, isError, movie } = movieDetailsState
+    const [allMoviesState, alMoviesDispatch] = useMoviesListReducer()
+    const { isLoading2, isError2, movies, pages, page } = allMoviesState
+    // related movies
+    // use Effect
+    useEffect(() => {
+        //  movie id
+        getMovieByIdAction(id, movieDetailsDispatch);
+    }, [id, movieDetailsDispatch]);
+
+    return (
         <Layout>
-            <MovieInfo movie={movie}/>
-            <div className="container mx-auto min-h-screen px-2 my-6">
-                <MovieCasts />
-                <MovieRates movie={movie}/>
-                <div className="my-16">
-                    <Titles title="Related Movies" Icon={BsFillCollectionPlayFill} />
-                    <div className="grid sm:mt-10 mt-6 x1:grid-cols-4 2x1:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-6">
-                        {RelatedMovies?.map((movie, index) => (
-                            <Movie key={index} movie={movie} />
-                        ))}
-                    </div>
-                </div>
+        {isLoading ? (
+            <div className={sameClass}>
+            <Loader />
             </div>
+        ) : isError ? (
+            <div className={sameClass}>
+            <div className="flex-colo w-24 h-24 p-5 mb-4 rounded-full bg-dry text-subMain text-4xl">
+                <RiMovie2Line />
+            </div>
+            <p className="text-border text-sm">Something went wrong</p>
+            </div>
+        ) : (
+            <>
+            <MovieInfo
+                movie={movie}
+                setModalOpen={setModalOpen}
+                // DownloadVideo={DownloadMovieVideo}
+                // progress={progress}
+            />
+            <div className="container mx-auto min-h-screen px-2 my-6">
+                <MovieCasts movie={movie} />
+                {/* rate */}
+                <MovieRates movie={movie} />
+            </div>
+            </>
+        )}
         </Layout>
-    )
+    );
 }
 
-export default SingleMovie
+export default SingleMovie;

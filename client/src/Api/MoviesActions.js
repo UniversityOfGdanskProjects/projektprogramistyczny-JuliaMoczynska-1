@@ -2,6 +2,7 @@
 
 // import { getAllMoviesService } from "./Movies/AllMovies";
 import { ErrorsAction } from "../Protection";
+import { getMovieByIdService } from "./Movies/ByIdMovie";
 import { getPopularMoviesService } from "./Movies/PopularMovies";
 import { getRandomMoviesService } from "./Movies/RandomMovies";
 
@@ -62,3 +63,17 @@ export const getRandomAction =  async (dispatch) => {
     ErrorsAction(error, dispatch, "MOVIES_RANDOM_FAIL");
   }
 }
+
+// get movie by id action
+export const getMovieByIdAction = async (id, dispatch) => {
+  try {
+    dispatch({ type: "MOVIE_DETAILS_REQUEST" });
+    const response = await getMovieByIdService(id);
+    dispatch({
+      type: "MOVIE_DETAILS_SUCCESS",
+      payload: response,
+    });
+  } catch (error) {
+    ErrorsAction(error, dispatch, "MOVIE_DETAILS_FAIL");
+  }
+};

@@ -3,9 +3,9 @@ import toast from "react-hot-toast";
 import Banner from "../Components/Home/Banner";
 import TopRated from "../Components/Home/TopRated";
 import Layout from "../Layout/Layout";
-import { useGetPopularMovies } from "../Reducers/Movies/PopularMovies";
-import { getPopularAction, getRandomAction } from "../Reducers/MoviesActions";
-import { useGetRandomMovies } from "../Reducers/Movies/RandomMovies";
+import { useGetPopularMovies } from "../Api/Movies/PopularMovies";
+import { getPopularAction, getRandomAction } from "../Api/MoviesActions";
+import { useGetRandomMovies } from "../Api/Movies/RandomMovies";
 
 function HomeScreen() {
   const [popularState, popularDispatch] = useGetPopularMovies();

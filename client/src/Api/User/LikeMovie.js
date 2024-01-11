@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import Axios from "../../Actions/Axios";
+import Axios from "../Axios";
 
 const initialState = {
   isLoading: false,
@@ -16,7 +16,7 @@ export const userLikeMovieReducer = (state, action) => {
       case "LIKE_MOVIE_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
       case "LIKE_MOVIE_RESET":
-        return {};
+        return {initialState};
       default:
         return state;
     }

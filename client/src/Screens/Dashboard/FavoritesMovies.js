@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
-import { getFavoriteMoviesAction } from "../../Reducers/UserActions";
+import { getFavoriteMoviesAction } from "../../Api/UserActions";
 import toast from "react-hot-toast";
 import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
-import { useUserFavoriteMoviesReducer } from "../../Reducers/User/FavoriteMovies";
+import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
 import { UserContext } from "../../Context/Context";
 
 function FavoritesMovies() {

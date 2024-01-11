@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { ErrorsAction, tokenProtection } from "../Protection";
 import { getFavoriteMoviesService } from "./User/FavoriteMovies";
 import { likeMovieService } from "./User/LikeMovie";
-
+// import { useUserFavoriteMoviesReducer } from "./User/FavoriteMovies";
 
 export const getFavoriteMoviesAction = async (dispatch, getState) => {
     try {
@@ -17,20 +17,20 @@ export const getFavoriteMoviesAction = async (dispatch, getState) => {
     }
 };
 
-export const likeMovieAction = async (movieId, dispatch, getState) => {
+export const likeMovieAction = async (movieId, likedispatch, favdispatch, getState) => {
     try {
-      dispatch({ type: "LIKE_MOVIE_REQUEST" });
+      likedispatch({ type: "LIKE_MOVIE_REQUEST" });
       const response = await likeMovieService(
         movieId,
         tokenProtection(getState)
       );
-      dispatch({
+      likedispatch({
         type: "LIKE_MOVIE_SUCCESS",
         payload: response,
       });
       toast.success("Added to your favorites");
-      getFavoriteMoviesAction();
+      getFavoriteMoviesAction(favdispatch,getState);
     } catch (error) {
-      ErrorsAction(error, dispatch, "LIKE_MOVIE_FAIL");
+      ErrorsAction(error, likedispatch, "LIKE_MOVIE_FAIL");
     }
 };
