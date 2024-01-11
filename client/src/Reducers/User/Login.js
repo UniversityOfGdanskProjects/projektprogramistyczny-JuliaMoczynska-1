@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import Axios from "./Axios";
+import Axios from "../../Actions/Axios";
 
 const initialState = {
   isLoading: false,

@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import Axios from "./Axios";
+import Axios from "../../Actions/Axios";
 
 const initialState = {
   isLoading: false,
@@ -21,7 +21,7 @@ const registerReducer = (state, action) => {
       default:
         return state;
     }
-  };
+};
 
 
 const registerService = async (user) => {

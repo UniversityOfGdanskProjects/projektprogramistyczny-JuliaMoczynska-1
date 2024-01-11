@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../Components/UsedInputs";
 import Layout from "../Layout/Layout";
@@ -6,8 +6,9 @@ import { FiLogIn } from "react-icons/fi";
 import { LoginValidation } from "../Components/Validation/UserValidation";
 import { InlineError } from "../Components/Notfications/Error";
 import { useFormik } from "formik";
-import { useLoginReducer, loginService } from "../Reducers/LoginReducer.js"; 
+import { useLoginReducer, loginService } from "../Reducers/User/Login";
 import toast from "react-hot-toast";
+import { UserContext } from "../Context/Context";
 
 function Login() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function Login() {
   });
 
   const { isLoading, isError, userInfo, isSuccess } = state;
+  // const { setUserInfo } = useContext(UserContext)
 
   const handleLoginError = useCallback(() => {
     if (isError) {
@@ -44,8 +46,10 @@ function Login() {
   useEffect(() => {
     if (userInfo?.isAdmin) {
       navigate("/dashboard");
+      // setUserInfo(userInfo)
     } else if (userInfo) {
       navigate("/profile");
+      // setUserInfo(userInfo)
     }
     if (isSuccess) {
       toast.success(`Welcome back ${userInfo?.fullName}`);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import HomeScreen from './Screens/HomeScreen';
 import MoviesPage from './Screens/Movies';
@@ -19,16 +19,37 @@ import Dashboard from './Screens/Dashboard/Admin/Dashboard';
 import Users from './Screens/Dashboard/Admin/Users';
 import AddMovie from './Screens/Dashboard/Admin/AddMovie';
 import ScrollOnTop from './ScrollOnTop';
-
+import Categories from './Screens/Dashboard/Admin/Categories';
+import { getAllMoviesService, useMoviesListReducer } from './Reducers/Movies/AllMovies';
+import { getAllMoviesAction } from './Reducers/MoviesActions';
+import { UserContext, UserProvider } from './Context/Context';
+import { getFavoriteMoviesAction } from './Reducers/UserActions';
+import { useUserFavoriteMoviesReducer } from './Reducers/User/FavoriteMovies';
 function App() {
+  Aos.init();
+  // const [categoriesState, categoriesDispatch] = useGetAllCategoriesReducer()
+  // const [moviesState, moviesDispatch] = useMoviesListReducer()
+  const [favoritesState, favoriteDispatch] = useUserFavoriteMoviesReducer()
+  const userInfoFromStorage = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null;
+
   useEffect(() => {
     Aos.init();
-  }, []);
+    if (userInfoFromStorage) {
+      getFavoriteMoviesAction(favoriteDispatch, userInfoFromStorage);
+    }
+    // getAllMoviesAction({}, 1, moviesDispatch)
+  },[favoriteDispatch, userInfoFromStorage]);
+
   return (
-    <ScrollOnTop>
+    <UserProvider>
+      <ScrollOnTop>
       <Routes>
         <Route path='/' element={<HomeScreen />} />
         <Route path='/movies' element={<MoviesPage />}/>
+        <Route path="/movies/:search" element={<MoviesPage />} />
+        <Route path="/categories" element={<Categories />} />
         <Route path='/movie/:id' element={<SingleMovie />}/>
         <Route path='/watch/:id' element={<WatchPage />}/>
         <Route path='/login' element={<Login />}/>
@@ -45,6 +66,9 @@ function App() {
         <Route path='*' element={<NotFound />}/>
       </Routes>
     </ScrollOnTop>
+
+    </UserProvider>
+  
     
   );
 }
