@@ -1,33 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
-import { getFavoriteMoviesAction } from "../../Api/UserActions";
+import { deleteFavoriteMoviesAction, getFavoriteMoviesAction } from "../../Api/Actions/UserActions";
 import toast from "react-hot-toast";
 import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
 import { UserContext } from "../../Context/Context";
+import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
 
 function FavoritesMovies() {
-  const { userInfo, setFavorietes } = useContext(UserContext);
+    const { userInfo, setFavorietes } = useContext(UserContext);
+    //favorite
     const [favoritesMovies, favoritesMoviesDispatch] = useUserFavoriteMoviesReducer();
     const { isLoading, isError, likedMovies } = favoritesMovies
-    const [initialstate, setinitialstate] = useState(false)
-    // delete
-    // const {
-    //     isLoading: deleteLoading,
-    //     isError: deleteError,
-    //     isSuccess,
-    // } = useSelector((state) => state.userDeleteFavoriteMovies);
 
-    // // delete movies handler
-    // const deleteMoviesHandler = () => {
-    //     window.confirm("Are you sure you want to delete all movies?") &&
-    //     dispatch(deleteFavoriteMoviesAction());
-    // };
+    const [initialstate, setinitialstate] = useState(false)
+    
+    //delete state
+    const [deleteState, deleteDispatch] = useUserDeleteFavoriteMoviesReducer();
+    const {isLoading2, isError2, isSuccess2} =  deleteState
+
+
+    // delete movies handler
+    const deleteMoviesHandler = () => {
+        window.confirm("Are you sure you want to delete all movies?") &&
+        deleteFavoriteMoviesAction(deleteDispatch, userInfo);
+    };
 
     useEffect(() => {
-        
         if(!initialstate){
             getFavoriteMoviesAction(favoritesMoviesDispatch, userInfo);
             setFavorietes(likedMovies)
@@ -49,23 +50,22 @@ function FavoritesMovies() {
         <div className="flex flex-col gap-6">
             <div className="flex-btn gap-2">
             <h2 className="text-xl font-bold">Favorites Movies</h2>
-            {/* {likedMovies?.length > 0 && (
+            {likedMovies?.length > 0 && (
                 <button
-                disabled={deleteLoading}
+                disabled={isLoading2}
                 onClick={deleteMoviesHandler}
                 className="bg-main font-medium transitions hover:bg-subMain border border-subMain text-white py-3 px-6 rounded"
                 >
-                {deleteLoading ? "Deleting..." : "Delete All"}
+                {isLoading2 ? "Deleting..." : "Delete All"}
                 </button>
-            )} */}
+            )}
             </div>
             {isLoading ? (
             <Loader />
             ) : likedMovies.length > 0 ? (
             <Table
                 data={likedMovies}
-                admin={false}
-                // progress={progress}
+                admin={userInfo?.isAdmin}
             />
             ) : (
             <Empty message="You have no favorites movies" />

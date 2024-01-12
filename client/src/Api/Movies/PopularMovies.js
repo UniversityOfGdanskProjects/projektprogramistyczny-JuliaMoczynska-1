@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import Axios from "../Axios";
 
-export const initialStatePopularMovies = {
+const initialState = {
     isLoading: false,
     isError: null,
     movies: []
@@ -26,5 +26,5 @@ export const getPopularMoviesService = async () => {
 };
 
 export const useGetPopularMovies = () => {
-    return useReducer(popularMoviesReducer, initialStatePopularMovies);
+    return useReducer(popularMoviesReducer, initialState);
 };

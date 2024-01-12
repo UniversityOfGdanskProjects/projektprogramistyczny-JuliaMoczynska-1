@@ -4,8 +4,8 @@ import Banner from "../Components/Home/Banner";
 import TopRated from "../Components/Home/TopRated";
 import Layout from "../Layout/Layout";
 import { useGetPopularMovies } from "../Api/Movies/PopularMovies";
-import { getPopularAction, getRandomAction } from "../Api/MoviesActions";
 import { useGetRandomMovies } from "../Api/Movies/RandomMovies";
+import { getPopularAction, getRandomAction } from "../Api/Actions/MoviesActions";
 
 function HomeScreen() {
   const [popularState, popularDispatch] = useGetPopularMovies();

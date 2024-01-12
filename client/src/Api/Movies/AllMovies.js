@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import Axios from "../Axios";
 
-export const initialStateMoviesList = {
+const initialState = {
     isLoading: false,
     isError: null,
     movies: [],
@@ -46,5 +46,5 @@ export const getAllMoviesService = async (
 };
 
 export const useMoviesListReducer = () => {
-    return useReducer(moviesListReducer, initialStateMoviesList);
+    return useReducer(moviesListReducer, initialState);
 };

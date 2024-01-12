@@ -43,7 +43,7 @@ function Register() {
         if (userInfo?.isAdmin) {
           navigate("/dashboard");
         } else if (userInfo) {
-          navigate("/profile");
+          navigate("/");
         }
         if (isSuccess) {
           toast.success(`Welcome ${userInfo?.fullName}`);
@@ -67,11 +67,12 @@ function Register() {
                     label="FullName"
                     placeholder="Netflixo React Tailwind"
                     type="text"
-                    bg={true}
-                    value={formik.values.fullName}
+                    name="fullName"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="fullName"
+                    value={formik.values.fullName}
+                    bg={true}
+
                     />
                     {formik.touched.fullName && formik.errors.fullName ? (
                         <InlineError text={formik.errors.fullName} />
@@ -84,9 +85,9 @@ function Register() {
                     placeholder="netflixo@gmail.com"
                     type="email"
                     name="email"
-                    value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    value={formik.values.email}
                     bg={true}
                     />
                     {formik.touched.email && formik.errors.email ? (
@@ -99,11 +100,11 @@ function Register() {
                     label="Password"
                     placeholder="*******"
                     type="password"
-                    bg={true}
-                    value={formik.values.password}
+                    name="password"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="password"
+                    value={formik.values.password}
+                    bg={true}
                     />
                     {formik.touched.password && formik.errors.password ? (
                         <InlineError text={formik.errors.password} />

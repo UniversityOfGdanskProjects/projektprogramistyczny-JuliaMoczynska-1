@@ -3,6 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaSearch, FaHeart } from "react-icons/fa";
 import { CgUser } from "react-icons/cg";
 import { UserContext } from "../../Context/Context.js"
+import { AiFillDelete } from "react-icons/ai";
+import { MdAdd } from "react-icons/md";
 
 function NavBar() {
   const [search, setSearch] = useState("");
@@ -64,29 +66,27 @@ function NavBar() {
             </NavLink>
             <NavLink to="/favorites" className={`${Hover} relative`}>
               <FaHeart className="w-6 h-6" />
-              <div className="w-5 h-5 flex-colo rounded-full text-xs bg-subMain text-white absolute -top-5 -right-1">
-                {/* {likedMovies?.length || 0} */}
-              </div>
+              {/* <div className="w-5 h-5 flex-colo rounded-full text-xs bg-subMain text-white absolute -top-5 -right-1">
+                {likedMovies?.length || 0}
+              </div> */}
+            </NavLink>
+            <NavLink to="/ignore" className={`${Hover} relative`}>
+                <AiFillDelete className="w-6 h-6"/>
+            </NavLink>
+            <NavLink to="/watchlist" className={`${Hover} relative`}>
+                <MdAdd className="w-6 h-6"/>
             </NavLink>
             <NavLink
               to={
                 userInfo?.isAdmin
                   ? "/dashboard"
                   : userInfo
-                  ? "/profile"
+                  ? "/password"
                   : "/login"
               }
               className={Hover}
             >
-              {userInfo ? (
-                <img
-                  src={userInfo?.image ? userInfo?.image : "/images/user.png"}
-                  alt={userInfo?.fullName}
-                  className="w-8 h-8 rounded-full border object-cover border-subMain"
-                />
-              ) : (
-                <CgUser className="w-8 h-8" />
-              )}
+              <CgUser className="w-8 h-8" />
             </NavLink>
           </div>
         </div>

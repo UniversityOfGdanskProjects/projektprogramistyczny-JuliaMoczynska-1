@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import Axios from "../Axios";
 
-export const initialStateRandomMovies = {
+const initialState = {
     isLoading: false,
     isError: null,
     movies: []
@@ -26,5 +26,5 @@ export const getRandomMoviesService = async () => {
 };
 
 export const useGetRandomMovies = () => {
-    return useReducer(moviesRandomReducer, initialStateRandomMovies);
+    return useReducer(moviesRandomReducer, initialState);
 };

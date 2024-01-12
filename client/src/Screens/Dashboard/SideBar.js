@@ -1,46 +1,96 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
 import { BsFillGridFill } from "react-icons/bs";
 import { FaListAlt, FaUsers } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
-import { MdAdd, MdFavorite, MdMovieCreation } from "react-icons/md";
-// import { MdCategory } from "react-icons/md";
-import { MdOutlinePassword } from "react-icons/md";
-import { AiFillDelete } from "react-icons/ai";
+import {
+  RiMovie2Fill,
+  RiLockPasswordLine,
+  RiLogoutCircleLine,
+} from "react-icons/ri";
+// import { HiViewGridAdd } from "react-icons/hi";
+// import { FiSettings } from "react-icons/fi";
 import Layout from "../../Layout/Layout";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { MdAdd, MdFavorite } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
+import { UserContext } from "../../Context/Context";
+import { logoutAction } from "../../Api/Actions/UserActions";
 
-function SideBar({children}) {
-    const SideLinks = [
+// import { useLoginReducer } from "../../Api/User/Login";
+// import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
+// import { useUserUpdateProfileReducer } from "../../Api/User/UpdateUser";
+// import { useUserDeleteProfileReducer } from "../../Api/User/DeleteProfile";
+// import { useUserChangePasswordReducer } from "../../Api/User/ChangePassword";
+
+function SideBar({ children }) {
+  const navigate = useNavigate();
+  const { userInfo } = useContext(UserContext)
+
+
+//DOKOŃCZYC LOGOUT!!! ^^^
+//   logout
+  const logoutHandler = () => {
+    logoutAction();
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+
+  const SideLinks = userInfo?.isAdmin
+    ? [
         {
-            name: "Information",
+            name: "Dashboard",
             link: "/dashboard",
-            icon: BsFillGridFill
+            icon: BsFillGridFill,
         },
         {
-            name: "Movie List",
-            link: "/movielist",
-            icon: FaListAlt
+            name: "Movies List",
+            link: "/movieslist",
+            icon: FaListAlt,
         },
         {
             name: "Add Movie",
             link: "/addmovie",
-            icon: MdMovieCreation
+            icon: RiMovie2Fill,
         },
-        // {
-        //     name: "Categories",
-        //     link: "/categories",
-        //     icon: MdCategory
-        // },
         {
             name: "Users",
             link: "/users",
-            icon: FaUsers
+            icon: FaUsers,
+        },
+        // {
+        //     name: "Update Profile",
+        //     link: "/profile",
+        //     icon: FiSettings,
+        // },
+        {
+            name: "Watchlist",
+            link: "/watchlist",
+            icon: MdAdd
         },
         {
-            name: "Update Profile",
-            link: "/profile",
-            icon: FiSettings
+            name: "Favorites Movies",
+            link: "/favorites",
+            icon: MdFavorite
         },
+        {
+            name: "Ignored Movies",
+            link: "/ignore",
+            icon: AiFillDelete
+        },
+        {
+          name: "Change Password",
+          link: "/password",
+          icon: RiLockPasswordLine,
+        },
+      ]
+    : userInfo
+    ? [
+        // {
+        //     name: "Update Profile",
+        //     link: "/profile",
+        //     icon: FiSettings,
+        // },
         {
             name: "Watchlist",
             link: "/watchlist",
@@ -59,9 +109,10 @@ function SideBar({children}) {
         {
             name: "Change Password",
             link: "/password",
-            icon: MdOutlinePassword
-        }
-    ];
+            icon: RiLockPasswordLine,
+        },
+      ]
+    : [];
 
     return (
         <Layout>
@@ -82,6 +133,12 @@ function SideBar({children}) {
                                 </NavLink>
                             ))}
                         </nav>
+                        <button
+                              onClick={logoutHandler}
+                              className="flex items-center space-x-4 pt-4 text-white hover:text-subMain transition"
+                        >
+                            <RiLogoutCircleLine className="text-xl"/> <span>Log Out</span>
+                        </button>
                     </div>
                     <div
                     data-aos="fade-up"
@@ -94,6 +151,10 @@ function SideBar({children}) {
             </div>
         </Layout>
     );
+  
 }
 
 export default SideBar;
+
+
+

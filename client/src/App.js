@@ -21,9 +21,9 @@ import AddMovie from './Screens/Dashboard/Admin/AddMovie';
 import ScrollOnTop from './ScrollOnTop';
 import Categories from './Screens/Dashboard/Admin/Categories';
 import { getAllMoviesService, useMoviesListReducer } from './Api/Movies/AllMovies';
-import { getAllMoviesAction } from './Api/MoviesActions';
+// import { getAllMoviesAction } from './Api/MoviesActions';
 import { UserContext, UserProvider } from './Context/Context';
-import { getFavoriteMoviesAction } from './Api/UserActions';
+import { getFavoriteMoviesAction } from './Api/Actions/UserActions';
 import { useUserFavoriteMoviesReducer } from './Api/User/FavoriteMovies';
 function App() {
   Aos.init();

@@ -7,7 +7,7 @@ import Titles from "../Components/Titles";
 import Layout from "../Layout/Layout";
 import { BsCollectionFill } from "react-icons/bs";
 import Movie from "../Components/Movie";
-import { getMovieByIdAction } from "../Api/MoviesActions";
+import { getMovieByIdAction } from "../Api/Actions/MoviesActions";
 import Loader from "../Components/Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
 import { useGetMovieDetailsReducer } from "../Api/Movies/ByIdMovie";

@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { UserContext } from "./Context";
-import { likeMovieAction } from "../Api/UserActions";
+import { likeMovieAction } from "../Api/Actions/UserActions";
 import { useUserFavoriteMoviesReducer } from "../Api/User/FavoriteMovies";
 
 // check if movie is added to favorites
