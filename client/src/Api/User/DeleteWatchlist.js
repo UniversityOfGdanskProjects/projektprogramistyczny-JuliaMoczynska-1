@@ -7,23 +7,23 @@ const initialState = {
     isSuccess: false
 };
 
-export const userDeleteFavoriteMoviesReducer = (state, action) => {
+export const userDeleteWatchlistReducer = (state, action) => {
     switch (action.type) {
-      case "DELETE_FAVORITE_MOVIES_REQUEST":
+      case "DELETE_WATCHLIST_REQUEST":
         return { ...state, isLoading: true };
-      case "DELETE_FAVORITE_MOVIES_SUCCESS":
+      case "DELETE_WATCHLIST_SUCCESS":
         return { ...state, isLoading: false, isSuccess: true };
-      case "DELETE_FAVORITE_MOVIES_FAIL":
+      case "DELETE_WATCHLIST_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
-      case "DELETE_FAVORITE_MOVIES_RESET":
+      case "DELETE_WATCHLIST_RESET":
         return {...initialState};
       default:
         return state;
     }
 };
 
-const deleteFavoriteMoviesService = async (token) => {
-    const { data } = await Axios.delete("/users/favorites", {
+const deleteWatchlistService = async (token) => {
+    const { data } = await Axios.delete("/users/watchlist", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +31,8 @@ const deleteFavoriteMoviesService = async (token) => {
     return data;
 };
 
-export const useUserDeleteFavoriteMoviesReducer = () => {
-  return useReducer(userDeleteFavoriteMoviesReducer, initialState);
+export const useUserDeleteWatchlistReducer = () => {
+  return useReducer(userDeleteWatchlistReducer, initialState);
 };
 
-export { deleteFavoriteMoviesService };
+export { deleteWatchlistService };

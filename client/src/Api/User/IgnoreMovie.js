@@ -7,23 +7,23 @@ const initialState = {
   isSuccess: false
 };
 
-export const userLikeMovieReducer = (state, action) => {
+export const userIgnoreMovieReducer = (state, action) => {
     switch (action.type) {
-      case "LIKE_MOVIE_REQUEST":
+      case "IGNORE_MOVIE_REQUEST":
         return { ...state, isLoading: true };
-      case "LIKE_MOVIE_SUCCESS":
+      case "IGNORE_MOVIE_SUCCESS":
         return { ...state, isLoading: false, isSuccess: true };
-      case "LIKE_MOVIE_FAIL":
+      case "IGNORE_MOVIE_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
-      case "LIKE_MOVIE_RESET":
+      case "IGNORE_MOVIE_RESET":
         return {...initialState};
       default:
         return state;
     }
 };
 
-const likeMovieService = async (movieId, token) => {
-    const { data } = await Axios.post(`/users/favorites`, movieId, {
+const ignoreMovieService = async (movieId, token) => {
+    const { data } = await Axios.post(`/users/ignore`, movieId, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +31,8 @@ const likeMovieService = async (movieId, token) => {
     return data;
 };
 
-export const useUserLikeMovieReducer = () => {
-  return useReducer(userLikeMovieReducer, initialState);
+export const useUserIgnoreMovieReducer = () => {
+  return useReducer(userIgnoreMovieReducer, initialState);
 };
 
-export { likeMovieService };
+export { ignoreMovieService };

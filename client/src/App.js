@@ -20,27 +20,24 @@ import Users from './Screens/Dashboard/Admin/Users';
 import AddMovie from './Screens/Dashboard/Admin/AddMovie';
 import ScrollOnTop from './ScrollOnTop';
 import Categories from './Screens/Dashboard/Admin/Categories';
-import { getAllMoviesService, useMoviesListReducer } from './Api/Movies/AllMovies';
+// import { getAllMoviesService, useMoviesListReducer } from './Api/Movies/AllMovies';
 // import { getAllMoviesAction } from './Api/MoviesActions';
 import { UserContext, UserProvider } from './Context/Context';
-import { getFavoriteMoviesAction } from './Api/Actions/UserActions';
-import { useUserFavoriteMoviesReducer } from './Api/User/FavoriteMovies';
+// import { getFavoriteMoviesAction } from './Api/Actions/UserActions';
+// import { useUserFavoriteMoviesReducer } from './Api/User/FavoriteMovies';
 function App() {
   Aos.init();
   // const [categoriesState, categoriesDispatch] = useGetAllCategoriesReducer()
   // const [moviesState, moviesDispatch] = useMoviesListReducer()
-  const [favoritesState, favoriteDispatch] = useUserFavoriteMoviesReducer()
-  const userInfoFromStorage = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
-    : null;
+  // const [favoritesState, favoriteDispatch] = useUserFavoriteMoviesReducer()
+  // const userInfoFromStorage = localStorage.getItem("userInfo")
+  //   ? JSON.parse(localStorage.getItem("userInfo"))
+  //   : null;
 
+  // Aos.init();
   useEffect(() => {
     Aos.init();
-    if (userInfoFromStorage) {
-      getFavoriteMoviesAction(favoriteDispatch, userInfoFromStorage);
-    }
-    // getAllMoviesAction({}, 1, moviesDispatch)
-  },[favoriteDispatch, userInfoFromStorage]);
+  },[]);
 
   return (
     <UserProvider>

@@ -59,7 +59,7 @@ const Rows = (movie, i, onDeleteHandler, admin) => {
             ) : (
                 <>
                     <div className="pt-2">
-                        <Link to={`/movie/${movie?.name}`} className="bg-dryGray hover:bg-green-500 ml-3 text-main rounded flex-colo w-6 h-6">
+                        <Link to={`/movie/${movie?._id}`} className="bg-dryGray hover:bg-green-500 ml-3 text-main rounded flex-colo w-6 h-6">
                             <IoEye />
                         </Link>
                     </div>

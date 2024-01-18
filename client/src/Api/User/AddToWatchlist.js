@@ -7,23 +7,23 @@ const initialState = {
   isSuccess: false
 };
 
-export const userLikeMovieReducer = (state, action) => {
+export const userAddToWatchlistReducer = (state, action) => {
     switch (action.type) {
-      case "LIKE_MOVIE_REQUEST":
+      case "ADD_TO_WATCHLIST_REQUEST":
         return { ...state, isLoading: true };
-      case "LIKE_MOVIE_SUCCESS":
+      case "ADD_TO_WATCHLIST_SUCCESS":
         return { ...state, isLoading: false, isSuccess: true };
-      case "LIKE_MOVIE_FAIL":
+      case "ADD_TO_WATCHLIST_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
-      case "LIKE_MOVIE_RESET":
+      case "ADD_TO_WATCHLIST_RESET":
         return {...initialState};
       default:
         return state;
     }
 };
 
-const likeMovieService = async (movieId, token) => {
-    const { data } = await Axios.post(`/users/favorites`, movieId, {
+const addToWatchlistService = async (movieId, token) => {
+    const { data } = await Axios.post(`/users/watchlist`, movieId, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,8 +31,8 @@ const likeMovieService = async (movieId, token) => {
     return data;
 };
 
-export const useUserLikeMovieReducer = () => {
-  return useReducer(userLikeMovieReducer, initialState);
+export const useUserAddToWatchlistReducer = () => {
+  return useReducer(userAddToWatchlistReducer, initialState);
 };
 
-export { likeMovieService };
+export { addToWatchlistService };

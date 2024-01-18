@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
 import { deleteFavoriteMoviesAction, getFavoriteMoviesAction } from "../../Api/Actions/UserActions";
@@ -10,40 +10,32 @@ import { UserContext } from "../../Context/Context";
 import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
 
 function FavoritesMovies() {
-    const { userInfo, setFavorietes } = useContext(UserContext);
-    //favorite
+    const { userInfo } = useContext(UserContext);
+    //favorites state
     const [favoritesMovies, favoritesMoviesDispatch] = useUserFavoriteMoviesReducer();
     const { isLoading, isError, likedMovies } = favoritesMovies
-
-    const [initialstate, setinitialstate] = useState(false)
     
-    //delete state
+    //delete favorites state
     const [deleteState, deleteDispatch] = useUserDeleteFavoriteMoviesReducer();
     const {isLoading2, isError2, isSuccess2} =  deleteState
 
 
-    // delete movies handler
+    // delete favorites movies handler
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all movies?") &&
-        deleteFavoriteMoviesAction(deleteDispatch, userInfo);
+        window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, userInfo);
     };
 
     useEffect(() => {
-        if(!initialstate){
-            getFavoriteMoviesAction(favoritesMoviesDispatch, userInfo);
-            setFavorietes(likedMovies)
-            setinitialstate(true)
+        getFavoriteMoviesAction(favoritesMoviesDispatch, userInfo);
+        if (isError ) {
+            toast.error(isError);
+            favoritesMoviesDispatch({ type: "GET_FAVORITE_MOVIES_RESET"  });
         }
-        
-        if (isError || "deleteError") {
-            toast.error(isError || "deleteError");
-            favoritesMoviesDispatch({
-                type: isError
-                ? "GET_FAVORITE_MOVIES_RESET"
-                : "DELETE_FAVORITE_MOVIES_RESET",
-            });
+        if ( isError2 ) {
+            toast.error(isError2);
+            deleteDispatch({type: "DELETE_FAVORITE_MOVIES_RESET"})
         }
-    }, [favoritesMoviesDispatch, initialstate, setFavorietes, likedMovies, userInfo, isError]);
+    }, [favoritesMoviesDispatch, deleteDispatch, isError2, userInfo, isError]);
 
     return (
         <SideBar>
