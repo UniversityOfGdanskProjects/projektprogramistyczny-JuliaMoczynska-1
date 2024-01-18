@@ -279,18 +279,18 @@ const addWatchlistMovie = asyncHandler(async (req, res) => {
     try {
       // find user in DB
       const user = await User.findById(req.user._id);
-      // if user exists add movie to liked movies and save it in DB
+      // if user exists add movie to watchlist and save it in DB
       if (user) {
-        // check if movie already liked
-        // if movie already liked send error message
-        if (user.likedMovies.includes(movieId)) {
+        // check if movie already added
+        // if movie already added send error message
+        if (user.watchlistMovies.includes(movieId)) {
           res.status(400);
-          throw new Error("Movie already liked");
+          throw new Error("Movie already added to watchlist");
         }
-        // else add movie to liked movies and save it in DB
-        user.likedMovies.push(movieId);
+        // else add movie to watchlist and save it in DB
+        user.watchlistMovies.push(movieId);
         await user.save();
-        res.json(user.likedMovies);
+        res.json(user.watchlistMovies);
       }
       // else send error message
       else {
@@ -309,11 +309,11 @@ const deleteWatchlistMovies = asyncHandler(async (req, res) => {
     try {
       // find user in DB
       const user = await User.findById(req.user._id);
-      // if user exists delete all liked movies and save it in DB
+      // if user exists delete watchlist and save it in DB
       if (user) {
-        user.likedMovies = [];
+        user.watchlistMovies = [];
         await user.save();
-        res.json({ message: "Your favorites movies deleted successfully" });
+        res.json({ message: "Your watchlist deleted successfully" });
       }
       // else send error message
       else {
@@ -337,7 +337,7 @@ const getIgnoredMovies = asyncHandler(async (req, res) => {
       const user = await User.findById(req.user._id).populate("ignoredMovies");
       // if user exists send ignored movies to client
       if (user) {
-        res.json(user.watchlistMovies);
+        res.json(user.ignoredMovies);
       }
       // else send error message
       else {
@@ -357,18 +357,18 @@ const addIgnoredMovie = asyncHandler(async (req, res) => {
     try {
       // find user in DB
       const user = await User.findById(req.user._id);
-      // if user exists add movie to liked movies and save it in DB
+      // if user exists add movie to ignored movies and save it in DB
       if (user) {
-        // check if movie already liked
-        // if movie already liked send error message
-        if (user.likedMovies.includes(movieId)) {
+        // check if movie already ignored
+        // if movie already ignored send error message
+        if (user.ignoredMovies.includes(movieId)) {
           res.status(400);
-          throw new Error("Movie already liked");
+          throw new Error("Movie already ignored");
         }
-        // else add movie to liked movies and save it in DB
-        user.likedMovies.push(movieId);
+        // else add movie to ignored movies and save it in DB
+        user.ignoredMovies.push(movieId);
         await user.save();
-        res.json(user.likedMovies);
+        res.json(user.ignoredMovies);
       }
       // else send error message
       else {
@@ -387,11 +387,11 @@ const deleteIgnoredMovies = asyncHandler(async (req, res) => {
     try {
       // find user in DB
       const user = await User.findById(req.user._id);
-      // if user exists delete all liked movies and save it in DB
+      // if user exists delete all ignored movies and save it in DB
       if (user) {
-        user.likedMovies = [];
+        user.ignoredMovies = [];
         await user.save();
-        res.json({ message: "Your favorites movies deleted successfully" });
+        res.json({ message: "Your ignored movies deleted successfully" });
       }
       // else send error message
       else {
@@ -449,9 +449,18 @@ const deleteUser = asyncHandler(async (req, res) => {
 export { 
     registerUser,
     loginUser,
-    updateUserProfile, deleteUserProfile, changeUserPassword, getLikedMovies, getWatchlistMovies, getIgnoredMovies, 
+    updateUserProfile, 
+    deleteUserProfile, 
+    changeUserPassword, 
+    getLikedMovies, 
+    getWatchlistMovies, 
+    getIgnoredMovies, 
     addLikedMovie, 
-    deleteLikedMovies, addWatchlistMovie, deleteWatchlistMovies,addIgnoredMovie, deleteIgnoredMovies,
+    deleteLikedMovies, 
+    addWatchlistMovie, 
+    deleteWatchlistMovies,
+    addIgnoredMovie, 
+    deleteIgnoredMovies,
     getUsers,
     deleteUser
 };

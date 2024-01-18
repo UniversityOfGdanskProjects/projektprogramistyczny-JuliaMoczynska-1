@@ -20,43 +20,42 @@ const importMovies = asyncHandler(async (req, res) => {
 // @access  Public
 
 const getMovies = asyncHandler(async (req, res) => {
-    try {
-      // filter movies by category, time, language, rate, year and search
-      const { category, time, language, rate, year, search } = req.query;
-          // if exists add to query
-      let query = {
-        ...(category && { category }),
-        ...(time && { time }),
-        ...(language && { language }),
-        ...(rate && { rate }),
-        ...(year && { year }),
-        ...(search && { name: { $regex: search, $options: "i" } }),
-      };
-  
-      // load more movies functionality
-      const page = Number(req.query.pageNumber) || 1; // if pageNumber is not provided in query we set it to 1
-      const limit = 2; // 10 movies per page
-      const skip = (page - 1) * limit; // skip 2 movies per page
-  
-      // find movies by query, skip and limit
-      const movies = await Movie.find(query)
-        // .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
-  
-      // get total number of movies
-      const count = await Movie.countDocuments(query);
-  
-      // send response with movies and total number of movies
-      res.json({
-        movies,
-        page,
-        pages: Math.ceil(count / limit), // total number of pages
-        totalMovies: count, // total number of movies
-      });
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
+  try {
+    // filter movies by category, time, language, rate, year and search
+    const { category, time, language, rate, year, search } = req.query;
+    let query = {
+      ...(category && { category }),
+      ...(time && { time }),
+      ...(language && { language }),
+      ...(rate && { rate }),
+      ...(year && { year }),
+      ...(search && { name: { $regex: search, $options: "i" } }),
+    };
+
+    // load more movies functionality
+    const page = Number(req.query.pageNumber) || 1; // if pageNumber is not provided in query we set it to 1
+    const limit = 10; // 10 movies per page
+    const skip = (page - 1) * limit; // skip 2 movies per page
+
+    // find movies by query, skip and limit
+    const movies = await Movie.find(query)
+      // .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // get total number of movies
+    const count = await Movie.countDocuments(query);
+
+    // send response with movies and total number of movies
+    res.json({
+      movies,
+      page,
+      pages: Math.ceil(count / limit), // total number of pages
+      totalMovies: count, // total number of movies
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 // @desc    get movie by id

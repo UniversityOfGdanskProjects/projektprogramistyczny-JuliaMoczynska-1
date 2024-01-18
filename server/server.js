@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 app.use("/api/users", userRouter)
 app.use("/api/movies", moviesRouter);
 app.use("/api/categories", categoriesRouter);
+// app.use("/api/upload", Uploadrouter);
 
 //error handling middlewere
 app.use(errorHandler)
