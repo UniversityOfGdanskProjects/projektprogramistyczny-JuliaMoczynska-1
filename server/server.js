@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorMiddleware.js";
 import userRouter from "./Routes/UserRouter.js";
 import moviesRouter from "./Routes/MoviesRouter.js"
 import categoriesRouter from "./Routes/CategoriesRouter.js";
+import Uploadrouter from "./Controllers/UploadFile.js";
 
 dotenv.config();
 
@@ -22,8 +23,8 @@ app.get('/', (req, res) => {
 //other routes
 app.use("/api/users", userRouter)
 app.use("/api/movies", moviesRouter);
-app.use("/api/categories", categoriesRouter);
-// app.use("/api/upload", Uploadrouter);
+// app.use("/api/categories", categoriesRouter);
+app.use("/api/upload", Uploadrouter);
 
 //error handling middlewere
 app.use(errorHandler)

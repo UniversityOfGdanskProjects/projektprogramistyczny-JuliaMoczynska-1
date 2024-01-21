@@ -33,11 +33,11 @@ const moviesSchema = mongoose.Schema(
     },
     titleImage: {
       type: String,
-      required: true,
+      required: false,
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     category: {
       type: String,
@@ -57,23 +57,24 @@ const moviesSchema = mongoose.Schema(
     },
     video: {
       type: String,
-      // required: true
+      required: false,
     },
     rate: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
     numberOfReviews: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
     reviews: [reviewSchema],
     casts: [
       {
-        name: { type: String, required: true },
-        image: { type: String },
+        firstName: { type: String, required: true },
+        lastName: { type: String, required: true },
+        photo: { type: String, required: false },
       },
     ],
   },

@@ -232,7 +232,7 @@ const deleteMovie = asyncHandler(async (req, res) => {
       const movie = await Movie.findById(req.params.id);
       // if the movie is found delete it
       if (movie) {
-        await movie.remove();
+        await movie.deleteOne();
         res.json({ message: "Movie removed" });
       }
       // if the movie is not found send 404 error
@@ -240,6 +240,7 @@ const deleteMovie = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Movie not found");
       }
+      Naviga
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
