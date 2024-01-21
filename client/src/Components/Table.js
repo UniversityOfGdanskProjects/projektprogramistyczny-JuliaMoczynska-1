@@ -11,7 +11,7 @@ const Rows = (movie, i, onDeleteHandler, admin) => {
                 <div className="w-12 p-1 bg-dry border border-border h-12 rounded overflow-hidden">
                 <img
                     className="h-full w-full object-cover"
-                    src={movie?.image ? movie?.image : "/images/user.png"}
+                    src={movie?.image ? movie?.image : "/images/movieIcon.png"}
                     alt={movie?.name}
                 />
                 </div>
@@ -42,20 +42,24 @@ const Rows = (movie, i, onDeleteHandler, admin) => {
                 </div>
             </td>
             {admin ? (
-                <>
+                <div className="flex p-2">
+                    <div className="p-2">
+                        <button
+                        onClick={() => onDeleteHandler(movie?._id)}
+                        className="bg-subMain text-white rounded flex-colo w-6 h-6"
+                        >
+                            <MdDelete />
+                        </button>
+                    </div>
                     <Link
                         to={`/edit/${movie?._id}`}
                         className="border border-border bg-dry flex-rows gap-2 text-border rounded py-1 px-2"
                         >
                         Edit <FaEdit className="text-green-500" />
                     </Link>
-                    <button
-                    onClick={() => onDeleteHandler(movie?._id)}
-                    className="bg-subMain text-white rounded flex-colo w-6 h-6"
-                    >
-                        <MdDelete />
-                    </button>
-                </>
+                    
+                </div>
+
             ) : (
                 <>
                     <div className="pt-2">

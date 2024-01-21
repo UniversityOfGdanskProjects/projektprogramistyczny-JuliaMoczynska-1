@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../Context/Context";
 import { useUserLikeMovieReducer } from "../Api/User/LikeMovie";
 import { FaHeart } from "react-icons/fa";
-// import { useDispatch, useSelector } from "react-redux";
 import { LikeMovie, AddToWatchList,  IfMovieLiked, IfAddedToWatchlist, IfMovieIgnored, IgnoreMovie } from "../Context/Functionalities";
 import { useUserFavoriteMoviesReducer } from "../Api/User/FavoriteMovies";
 import { MdAdd } from "react-icons/md";
@@ -19,18 +18,18 @@ function Movie({ movie }) {
 
   //like movie
   const [ likeMoviesState, likeMoviesDispatch ] = useUserLikeMovieReducer();
-  const  [favMoviesState, favMoviesDispatch] = useUserFavoriteMoviesReducer();
-  const { isLoading,  isError, isSuccess } = likeMoviesState
+  const  [, favMoviesDispatch] = useUserFavoriteMoviesReducer();
+  const { isLoading } = likeMoviesState
 
   //watchlist
   const [ addToWatchlistState, addToWatchlistDispatch ] = useUserAddToWatchlistReducer();
-  const  [watchlistState, watchlistDispatch] = useUserGetWatchlistReducer();
-  const { isLoading2,  isError2, isSuccess2 } = addToWatchlistState
+  const  [, watchlistDispatch] = useUserGetWatchlistReducer();
+  const { isLoading: isLoading2} = addToWatchlistState
 
   // ignore movie
   const [addToIgnoredMoviesState, ignoreMoviesDispatch] = useUserIgnoreMovieReducer();
-  const [ignoredMoviesState, ignoredDispatch ] = useUserIgnoredMoviesReducer();
-  const { isLoading3, isError3, isSuccess3 } = addToIgnoredMoviesState
+  const [, ignoredDispatch ] = useUserIgnoredMoviesReducer();
+  const { isLoading: isLoading3 } = addToIgnoredMoviesState
 
   
   // if liked function
@@ -47,7 +46,7 @@ function Movie({ movie }) {
       <div className="border border-border p-1 hover:scale-95 transitions relative rounded overflow-hidden">
         <Link to={`/movie/${movie?._id}`} className="w-full">
           <img
-            src={movie?.image ? movie?.image : "/images/user.png"}
+            src={movie?.image ? movie?.image : "/images/movieIcon.png"}
             alt={movie?.name}
             className="w-full h-64 object-cover"
           />

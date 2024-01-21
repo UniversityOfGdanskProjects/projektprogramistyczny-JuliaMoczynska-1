@@ -8,20 +8,28 @@ import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
+import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
+import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
+import { useNavigate } from "react-router-dom";
 
 function IgnoredMovies() { 
+    const navigate = useNavigate();
     const { userInfo } = useContext(UserContext);
-    // Ignored movies state
     const [ignoredMoviesState, ignoredMoviesDispatch] = useUserIgnoredMoviesReducer(); 
     const { isLoading, isError, ignoredMovies } = ignoredMoviesState
     
-    // Delete ignored movies state
     const [deleteState, deleteDispatch] = useUserDeleteIgnoredMoviesReducer(); 
-    const { isLoading2, isError2, isSuccess2 } = deleteState
+    const { isLoading: isLoading2, isError: isError2 } = deleteState
 
-    // Delete ignored movies handler
+    const [, deleteOneMovieDispatch] = useDeleteMovieReducer();
+
+
     const deleteMoviesHandler = () => {
         window.confirm("Are you sure you want to delete all ignored movies?") && deleteIgnoredMoviesAction(deleteDispatch, ignoredMoviesDispatch, userInfo);
+    };
+
+    const deleteMovieHandler = (id) => {
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
     };
 
     useEffect(() => {
@@ -54,7 +62,8 @@ function IgnoredMovies() {
                 {isLoading ? (
                     <Loader />
                 ) : ignoredMovies.length > 0 ? (
-                    <Table data={ignoredMovies} admin={userInfo?.isAdmin} />
+                    <Table data={ignoredMovies} admin={userInfo?.isAdmin} onDeleteHandler={deleteMovieHandler}
+                    />
                 ) : (
                     <Empty message="You have no ignored movies" />
                 )}

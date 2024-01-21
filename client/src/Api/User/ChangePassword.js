@@ -22,7 +22,7 @@ export const userChangePasswordReducer = (state = {}, action) => {
       case "USER_CHANGE_PASSWORD_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
       case "USER_CHANGE_PASSWORD_RESET":
-        return {initialState};
+        return initialState;
       default:
         return state;
     }

@@ -24,4 +24,5 @@ const movieValidation = yup.object().shape({
     .max(300, "Movie description should be less than 300 characters"),
 });
 
+
 export { ReviewValidation, movieValidation };

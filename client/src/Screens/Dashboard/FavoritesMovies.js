@@ -8,8 +8,12 @@ import { Empty } from "../../Components/Notfications/Empty";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
 import { UserContext } from "../../Context/Context";
 import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
+import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
+import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
+import { useNavigate } from "react-router-dom";
 
 function FavoritesMovies() {
+    const navigate = useNavigate();
     const { userInfo } = useContext(UserContext);
     //favorites state
     const [favoritesMovies, favoritesMoviesDispatch] = useUserFavoriteMoviesReducer();
@@ -17,12 +21,19 @@ function FavoritesMovies() {
     
     //delete favorites state
     const [deleteState, deleteDispatch] = useUserDeleteFavoriteMoviesReducer();
-    const {isLoading2, isError2, isSuccess2} =  deleteState
+    const {isLoading: isLoading2, isError: isError2} =  deleteState
 
+
+    const [, deleteOneMovieDispatch] = useDeleteMovieReducer();
 
     // delete favorites movies handler
     const deleteMoviesHandler = () => {
         window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, userInfo);
+    };
+
+    // delete movie handler
+    const deleteMovieHandler = (id) => {
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
     };
 
     useEffect(() => {
@@ -58,6 +69,7 @@ function FavoritesMovies() {
             <Table
                 data={likedMovies}
                 admin={userInfo?.isAdmin}
+                onDeleteHandler={deleteMovieHandler}
             />
             ) : (
             <Empty message="You have no favorites movies" />

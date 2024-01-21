@@ -7,30 +7,30 @@ const initialState = {
     isError: null
 };
 
-export const createReviewReducer = (state, action) => {
+export const createMovieReducer = (state, action) => {
     switch (action.type) {
-      case "CREATE_REVIEW_REQUEST":
+      case "CREATE_MOVIE_REQUEST":
         return { ...state, isLoading: true };
-      case "CREATE_REVIEW_SUCCESS":
+      case "CREATE_MOVIE_SUCCESS":
         return { ...state, isLoading: false, isSuccess: true };
-      case "CREATE_REVIEW_FAIL":
+      case "CREATE_MOVIE_FAIL":
         return { ...state, isLoading: false, isError: action.payload };
-      case "CREATE_REVIEW_RESET":
-        return initialState;
+      case "CREATE_MOVIE_RESET":
+        return {...initialState};
       default:
         return state;
     }
-  };
+};
 
-export const reviewMovieService = async (token, id, review) => {
-    const { data } = await Axios.post(`/movies/${id}/reviews`, review, {
+export const createMovieService = async (token, movie) => {
+    const { data } = await Axios.post(`/movies`, movie, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return data;
-};
+  };
 
-export const useCreateReviewReducer = () => {
-    return useReducer(createReviewReducer, initialState);
+export const useCreateMovieReducer = () => {
+    return useReducer(createMovieReducer, initialState);
 };

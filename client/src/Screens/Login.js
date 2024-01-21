@@ -36,7 +36,6 @@ function Login() {
   });
 
   const { isLoading, isError, userInfo, isSuccess } = state;
-  // const { setUserInfo } = useContext(UserContext)
 
   const handleLoginError = useCallback(() => {
     if (isError) {

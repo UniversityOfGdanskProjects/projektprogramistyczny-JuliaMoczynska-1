@@ -15,7 +15,6 @@ function Password() {
   const { isLoading, isError, isSuccess, message } = newPasswordState;
   const { userInfo } = useContext(UserContext)
 
-  // useFormik hook
   const formik = useFormik({
     initialValues: {
       oldPassword: "",
@@ -28,7 +27,6 @@ function Password() {
     },
   });
 
-  // useEffect
   useEffect(() => {
     if (isSuccess) {
       changePasswordDispatch({ type: "USER_CHANGE_PASSWORD_RESET" });

@@ -5,7 +5,6 @@ import { UserContext } from "./Context/Context";
 
 function ProtectedRouter() {
   const { userInfo } = useContext(UserContext);
-
   return userInfo?.token ? <Outlet /> : <Navigate to="/login" />;
 }
 

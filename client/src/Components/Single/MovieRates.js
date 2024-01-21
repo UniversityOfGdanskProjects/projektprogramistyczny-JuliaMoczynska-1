@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Titles from "../Titles";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import { Message, Select } from "../UsedInputs";
@@ -43,32 +43,29 @@ const Ratings = [
 
 function MovieRates({ movie }) {
   const [createReviewState, createReviewDispatch] = useCreateReviewReducer();
-  const [byIdMovie, byIdMovieDispatch] = useGetMovieDetailsReducer();
-  const { isLoading, isSuccess, isError } = createReviewState;
+  const [, byIdMovieDispatch] = useGetMovieDetailsReducer();
+  const { isLoading, isError } = createReviewState;
   const { userInfo } = useContext(UserContext);
-  const [review, setReview] = useState()
-  const [message, setMessage] = useState()
-  
-  // useFormik hook
-  const formik = useFormik({
-    initialValues: {
-      rating: 0,
-      comment: "",
-    },
-    validationSchema: ReviewValidation,
-    onSubmit: async (values) => {
-        try {
-          await reviewMovieAction({
-            id: movie?._id,
-            review: values,
-          }, createReviewDispatch, byIdMovieDispatch, userInfo);
 
-          window.location.reload();
-        } catch (error) {
-          toast.error(error.message);
-        }
-      },
-    });
+  const formik = useFormik({
+  initialValues: {
+    rating: 0,
+    comment: "",
+  },
+  validationSchema: ReviewValidation,
+  onSubmit: async (values) => {
+      try {
+        await reviewMovieAction({
+          id: movie?._id,
+          review: values,
+        }, createReviewDispatch, byIdMovieDispatch, userInfo);
+
+        window.location.reload();
+      } catch (error) {
+        toast.error(error.message);
+      }
+    },
+  });
 
   useEffect(() => {
     if (isError) {

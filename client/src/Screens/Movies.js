@@ -6,8 +6,6 @@ import toast from "react-hot-toast";
 import { TbPlayerTrackNext, TbPlayerTrackPrev } from "react-icons/tb";
 import Loader from "../Components/Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
-// import { useMoviesListReducer, getAllMoviesService} from "../Actions/Reducers"
-// import { useGetAllCategoriesReducer } from "../Actions/Reducers";
 import {
   CategoriesData,
   LanguageData,
@@ -18,7 +16,7 @@ import {
 import { useParams } from "react-router-dom";
 import { ErrorsAction } from "../Protection";
 import { getAllMoviesService, useMoviesListReducer } from "../Api/Movies/AllMovies";
-// import { getAllMoviesAction } from "../Actions/Actions";
+
 
 function MoviesPage() {
   const { search } = useParams();
@@ -28,17 +26,12 @@ function MoviesPage() {
   const [rates, setRates] = useState(RatesData[0]);
   const [language, setLanguage] = useState(LanguageData[0]);
   const [moviesState, moviesDispatch] = useMoviesListReducer();
-  // eslint-disable-next-line no-unused-vars
-  // const [categoriesState, categoriesDispatch] = useGetAllCategoriesReducer();
+
   const sameClass =
     "text-white py-2 px-4 rounded font-semibold border-2 border-subMain hover:bg-subMain";
 
-  // all movies
   const { isLoading, isError, movies, pages, page } = moviesState
-  // get all categories
-  // const { categories } = categoriesState
 
-  // queries
   const queries = useMemo(() => {
     const query = {
         category: category?.title === "All Categories" ? "" : (category?.title || ""),
@@ -64,10 +57,12 @@ function MoviesPage() {
           queries.search,
           page
         );
+
         moviesDispatch({
           type: "MOVIES_LIST_SUCCESS",
           payload: response,
         });
+        
       } catch (error) {
         ErrorsAction(error, moviesDispatch, "MOVIES_LIST_FAIL");
       }
@@ -76,26 +71,21 @@ function MoviesPage() {
   );
 
   useEffect(() => {
-    // errors
     if (isError) {
       toast.error(isError);
     }
-    // get all movies
     getAllMoviesAction(page);
   }, [getAllMoviesAction, isError, queries, page]);
 
-  // pagination next and pev pages
   const nextPage = () => {
     getAllMoviesAction( page + 1)
 
   };
   const prevPage = () => {
-
     getAllMoviesAction( page - 1)
   };
 
   const datas = {
-    // categories: categories,
     category: category,
     setCategory: setCategory,
     language: language,

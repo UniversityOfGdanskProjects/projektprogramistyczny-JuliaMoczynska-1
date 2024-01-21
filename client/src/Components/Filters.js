@@ -11,7 +11,6 @@ import {
 
 function Filters(props) {
   const {
-    // categories,
     category,
     setCategory,
     language,

@@ -1,15 +1,14 @@
 import React from "react";
-import { FaPlay, FaShareAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import {  FaPlay } from "react-icons/fa";
 import FlexMovieItems from "../FlexMovieItems";
-import { FiLogIn } from "react-icons/fi";
 import Rating from "../Stars";
 
-function MovieInfo({ movie, setModalOpen, DownloadVideo, progress }) {
+function MovieInfo({ movie }) {
+
   return (
     <div className="w-full xl:h-screen relative text-white">
       <img
-        src={movie?.image ? movie?.image : "/images/user.png"}
+        src={movie?.image ? movie?.image : "/images/movieIcon.png"}
         alt={movie?.name}
         className="w-full hidden xl:inline-block h-full object-cover"
       />
@@ -17,7 +16,7 @@ function MovieInfo({ movie, setModalOpen, DownloadVideo, progress }) {
         <div className="container px-3 mx-auto 2xl:px-32 xl:grid grid-cols-3 flex-colo py-10 lg:py-20 gap-8">
           <div className="xl:col-span-1 w-full xl:order-none order-last h-header bg-dry border border-gray-800 rounded-lg overflow-hidden">
             <img
-              src={movie?.titleImage ? movie?.titleImage : "/images/user.png"}
+              src={movie?.titleImage ? movie?.titleImage : "/images/movieIcon.png"}
               alt={movie?.name}
               className="w-full h-full object-cover"
             />
@@ -47,12 +46,14 @@ function MovieInfo({ movie, setModalOpen, DownloadVideo, progress }) {
                 </div>
                 {/* watch button */}
                 <div className="sm:col-span-2 col-span-3 flex justify-end font-medium text-sm">
-                  <Link
-                    to={`/watch/${movie?._id}`}
-                    className="bg-dry py-4 hover:bg-subMain transitions border-2 border-subMain rounded-full flex-rows gap-4 w-full sm:py-3"
-                  >
-                    <FaPlay className="w-3 h-3" /> Watch
-                  </Link>
+                <a
+                  href={movie?.video} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-dry py-4 hover:bg-subMain transitions border-2 border-subMain rounded-full flex-rows gap-4 w-full sm:py-3"
+                >
+                  <FaPlay className="w-3 h-3" /> Watch Trailer
+                </a>
                 </div>
               </div>
               {/* ratings */}

@@ -1,6 +1,5 @@
 import * as yup from "yup";
 
-// login validation
 const LoginValidation = yup.object().shape({
   email: yup.string().email().required("Email is required").trim(),
   password: yup
@@ -11,7 +10,6 @@ const LoginValidation = yup.object().shape({
     .matches(/(?=.*[0-9])/, "Password must contain a number"),
 });
 
-// register validation
 const RegisterValidation = yup.object().shape({
   email: yup.string().email().required("Email is required").trim(),
   password: yup

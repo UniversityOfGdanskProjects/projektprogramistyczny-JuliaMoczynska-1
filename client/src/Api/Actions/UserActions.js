@@ -3,8 +3,6 @@ import { ErrorsAction, tokenProtection } from "../../Protection";
 import { getFavoriteMoviesService } from "../User/FavoriteMovies";
 import { likeMovieService } from "../User/LikeMovie";
 import { changePasswordService } from "../User/ChangePassword";
-// import { updateProfileService } from "../User/UpdateUser";
-import { deleteProfileService } from "../User/DeleteProfile";
 import { logoutService } from "../User/Logout";
 import { deleteFavoriteMoviesService } from "../User/DeleteFavoriteMovies";
 import { getWatchlistService } from "../User/WatchlistMovies";
@@ -13,8 +11,10 @@ import { deleteWatchlistService } from "../User/DeleteWatchlist";
 import { getIgnoredMoviesService } from "../User/IgnoredMovies";
 import { ignoreMovieService } from "../User/IgnoreMovie";
 import { deleteIgnoredMoviesService } from "../User/DeleteIgnoredMovies";
+import { getAllUsersService } from "../Admin/AllUsers";
+import { deleteUserService } from "../Admin/DeleteUser";
+import { updateProfileService } from "../User/UpdateUser";
 
-// change password action
 export const changePasswordAction = async (passwords, dispatch, getState) => {
   try {
     dispatch({ type: 'USER_CHANGE_PASSWORD_REQUEST' });
@@ -31,38 +31,26 @@ export const changePasswordAction = async (passwords, dispatch, getState) => {
   }
 };
 
-// // update profile action
-// export const updateProfileAction =  async (user, dispatch, getState) => {
-//   try {
-//     dispatch({ type: "USER_UPDATE_PROFILE_REQUEST" });
-//     const response = await updateProfileService(
-//       user,
-//       tokenProtection(getState)
-//     );
-//     dispatch({
-//       type: "USER_UPDATE_PROFILE_SUCCESS",
-//       payload: response,
-//     });
-//     toast.success("Profile Updated");
-//     dispatch({
-//       type: "USER_LOGIN_SUCCESS",
-//       payload: response,
-//     });
-//   } catch (error) {
-//     ErrorsAction(error, dispatch, "USER_UPDATE_PROFILE_FAIL");
-//   }
-// };
 
-// delete profile action
-export const deleteProfileAction =  async (dispatch, getState) => {
+export const updateProfileAction =  async (user, dispatch, getState, setUser) => {
   try {
-    dispatch({ type: "USER_DELETE_PROFILE_REQUEST" });
-    await deleteProfileService(tokenProtection(getState));
-    dispatch({ type: "USER_DELETE_PROFILE_SUCCESS" });
-    toast.success("Profile Deleted");
-    // logoutAction();
+    dispatch({ type: "USER_UPDATE_PROFILE_REQUEST" });
+    const response = await updateProfileService(
+      user,
+      tokenProtection(getState)
+    );
+    dispatch({
+      type: "USER_UPDATE_PROFILE_SUCCESS",
+      payload: response,
+    });
+    toast.success("Profile Updated");
+    dispatch({
+      type: "USER_LOGIN_SUCCESS",
+      payload: response,
+    });
+    setUser({...getState, fullName: user.fullName, image: user.image})
   } catch (error) {
-    ErrorsAction(error, dispatch, "USER_DELETE_PROFILE_FAIL");
+    ErrorsAction(error, dispatch, "USER_UPDATE_PROFILE_FAIL");
   }
 };
 
@@ -143,7 +131,6 @@ export const addToWatchlistAction = async (movieId, addedispatch, watchlistdispa
   }
 };
 
-// delete watchlist action
 export const deleteWatchlistAction =  async (dispatch, watchlistdispatch, getState) => {
   try {
     dispatch({ type: "DELETE_WATCHLIST_REQUEST" });
@@ -203,25 +190,81 @@ export const deleteIgnoredMoviesAction = async (dispatch, ignoredDispatch, getSt
   }
 };
 
+export const getAllUsersAction = async (dispatch, getState) => {
+  try {
+    dispatch({ type: "GET_ALL_USERS_REQUEST" });
+    const response = await getAllUsersService(
+      tokenProtection(getState)
+    );
+    dispatch({
+      type: "GET_ALL_USERS_SUCCESS",
+      payload: response,
+    });
+  } catch (error) {
+    ErrorsAction(error, dispatch, "GET_ALL_USERS_FAIL");
+  }
+};
 
-// logout action
-export const logoutAction = (dispatch) => {
-  logoutService();
-  dispatch({ type: "USER_LOGOUT" });
-  dispatch({ type: "USER_LOGIN_RESET" });
-  dispatch({ type: "USER_REGISTER_RESET" });
-  dispatch({ type: "DELETE_FAVORITE_MOVIES_RESET" });
-  dispatch({ type: "USER_UPDATE_PROFILE_RESET" });
-  dispatch({ type: "USER_DELETE_PROFILE_RESET" });
-  dispatch({ type: "USER_CHANGE_PASSWORD_RESET" });
-  dispatch({ type: "GET_FAVORITE_MOVIES_RESET" });
-  dispatch({ type: "GET_ALL_USERS_RESET" });
-  dispatch({ type: "DELETE_USER_RESET" });
-  dispatch({ type: "LIKE_MOVIE_RESET" });
-  dispatch({ type: "MOVIE_DETAILS_RESET" });
-  dispatch({ type: "CREATE_REVIEW_RESET" });
-  dispatch({ type: "CREATE_MOVIE_RESET" });
-  dispatch({ type: "RESET_CAST" });
-  dispatch({ type: "UPDATE_MOVIE_RESET" });
+export const deleteUserAction = async (id, dispatch, getState) => {
+  try {
+    dispatch({ type: "DELETE_USER_REQUEST" });
+    await deleteUserService(id, tokenProtection(getState));
+    dispatch({
+      type: "DELETE_USER_SUCCESS",
+    });
+    toast.success("User Deleted");
+  } catch (error) {
+    ErrorsAction(error, dispatch, "DELETE_USER_FAIL");
+  }
+};
+
+
+export const logoutAction = (
+  setUserInfo,
+  loginDispatch,
+  registerDispatch,
+  userFavoriteMoviesDispatch, 
+  userDeleteFavoriteMoviesDispatch,
+  userLikeMovieDispatch,
+  userIgnoredMoviesDispatch, 
+  userDeleteIgnoredMoviesDispatch,
+  userIgnoreMovieDispatch,
+  userWatchlistDispatch,
+  userDeleteWatchlistDispatch,
+  userAddToWatchlistDispatch,
+  userUpdateProfileDispatch,
+  userChangePasswordDispatch,
+  adminGetAllUsersDispatch,
+  adminDeleteUserDispatch,
+  getMovieDetailsDispatch,
+  createReviewDispatch,
+  createMovieDispatch,
+  updateMovieDispatch
+) => {
+  logoutService(setUserInfo);
+  loginDispatch({ type: "USER_LOGOUT" });
+  loginDispatch({ type: "USER_LOGIN_RESET" });
+  registerDispatch({ type: "USER_REGISTER_RESET" });
+
+  userFavoriteMoviesDispatch({ type: "GET_FAVORITE_MOVIES_RESET" });
+  userDeleteFavoriteMoviesDispatch({ type: "DELETE_FAVORITE_MOVIES_RESET" });
+  userLikeMovieDispatch({ type: "LIKE_MOVIE_RESET" });
+
+  userIgnoredMoviesDispatch({ type: "DELETE_IGNORED_MOVIES_RESET" });
+  userDeleteIgnoredMoviesDispatch({ type: "DELETE_IGNORED_MOVIES_RESET" });
+  userIgnoreMovieDispatch({ type: "IGNORE_MOVIE_RESET" });
+
+  userWatchlistDispatch({ type: "ADD_TO_WATCHLIST_RESET" });
+  userDeleteWatchlistDispatch({ type: "DELETE_WATCHLIST_RESET" });
+  userAddToWatchlistDispatch({ type: "IGNORE_MOVIE_RESET" });
+
+  userUpdateProfileDispatch({ type: "USER_UPDATE_PROFILE_RESET" });
+  userChangePasswordDispatch({ type: "USER_CHANGE_PASSWORD_RESET" });
+  adminGetAllUsersDispatch({ type: "GET_ALL_USERS_RESET" });
+  adminDeleteUserDispatch({ type: "DELETE_USER_RESET" });
+  getMovieDetailsDispatch({ type: "MOVIE_DETAILS_RESET" });
+  createReviewDispatch({ type: "CREATE_REVIEW_RESET" });
+  createMovieDispatch({ type: "CREATE_MOVIE_RESET" });
+  updateMovieDispatch({ type: "UPDATE_MOVIE_RESET" });
 
 };

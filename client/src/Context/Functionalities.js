@@ -1,31 +1,28 @@
 import toast from "react-hot-toast";
-import { useContext } from "react";
-import { UserContext } from "./Context";
+
 import { addToWatchlistAction, ignoreMovieAction, likeMovieAction } from "../Api/Actions/UserActions";
 import { useUserFavoriteMoviesReducer } from "../Api/User/FavoriteMovies";
 import { useUserGetWatchlistReducer } from "../Api/User/WatchlistMovies";
 import { useUserIgnoredMoviesReducer } from "../Api/User/IgnoredMovies";
 
-// check if movie is added to favorites
 const IfMovieLiked = (movie) => {
-  const  [likedMoviesState, likedMoviesDispatch] = useUserFavoriteMoviesReducer();
-  const {isLoading,  isError, likedMovies} = likedMoviesState
+  const  [likedMoviesState, ] = useUserFavoriteMoviesReducer();
+  const { likedMovies } = likedMoviesState
   return likedMovies?.find((likedMovie) => likedMovie?._id === movie?._id);
 };
 
 const IfAddedToWatchlist = (movie) => {
-  const  [addedMoviesState, addedMoviesDispatch] = useUserGetWatchlistReducer();
-  const {isLoading,  isError, watchlist} = addedMoviesState 
+  const  [addedMoviesState, ] = useUserGetWatchlistReducer();
+  const { watchList: watchlist} = addedMoviesState 
   return watchlist?.find((addedMovie) => addedMovie?._id === movie?._id);
 };
 
 const IfMovieIgnored = (movie) => {
-  const [ignoredMoviesState, ignoredMoviesDispatch] = useUserIgnoredMoviesReducer();
-  const { isLoading, isError, ignoredMovies } = ignoredMoviesState;
+  const [ignoredMoviesState, ] = useUserIgnoredMoviesReducer();
+  const { ignoredMovies } = ignoredMoviesState;
   return ignoredMovies?.find((ignoredMovie) => ignoredMovie?._id === movie?._id);
 };
 
-// like movie functionalty
 const LikeMovie = (movie, likedispatch, favdispatch, userInfo) => {
   return !userInfo
     ? toast.error("Please Login to add to favorites")

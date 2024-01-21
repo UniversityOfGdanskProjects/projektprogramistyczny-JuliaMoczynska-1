@@ -11,7 +11,7 @@ function HomeScreen() {
   const [popularState, popularDispatch] = useGetPopularMovies();
   const [randomState, randomDispatch] = useGetRandomMovies();
   const { isLoading, isError, movies } = popularState;
-  const { isLoadingRandom, isErrorRandom, moviesRandom } = randomState;
+  const { isError: isErrorRandom } = randomState;
   const [initialLoad, setInitialLoad] = useState(false);
 
   useEffect(() => {

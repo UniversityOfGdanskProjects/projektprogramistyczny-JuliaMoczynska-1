@@ -6,11 +6,14 @@ import toast from "react-hot-toast";
 import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
 import { UserContext } from "../../Context/Context";
-import { useUserAddToWatchlistReducer } from "../../Api/User/AddToWatchlist";
 import { useUserDeleteWatchlistReducer } from "../../Api/User/DeleteWatchlist";
 import { useUserGetWatchlistReducer } from "../../Api/User/WatchlistMovies";
+import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
+import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
+import { useNavigate } from "react-router-dom";
 
 function WatchList() {
+    const navigate = useNavigate();
     const { userInfo } = useContext(UserContext);
     //watchlist state
     const [watchListState, watchListDispatch] = useUserGetWatchlistReducer();
@@ -18,12 +21,20 @@ function WatchList() {
     
     //delete watchlist state
     const [deleteState, deleteDispatch] = useUserDeleteWatchlistReducer();
-    const {isLoading2, isError2, isSuccess2} =  deleteState
+    const {isLoading: isLoading2, isError: isError2} =  deleteState
+
+    const [, deleteOneMovieDispatch] = useDeleteMovieReducer();
 
 
     // delete watchlist movies handler
     const deleteMoviesHandler = () => {
         window.confirm("Are you sure you want to delete all movies from watchlist?") && deleteWatchlistAction(deleteDispatch, watchListDispatch, userInfo);
+    };
+
+
+    // delete movie handler
+    const deleteMovieHandler = (id) => {
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
     };
 
     useEffect(() => {
@@ -59,6 +70,8 @@ function WatchList() {
             <Table
                 data={watchList}
                 admin={userInfo?.isAdmin}
+                onDeleteHandler={deleteMovieHandler}
+
             />
             ) : (
             <Empty message="You have no favorites movies" />

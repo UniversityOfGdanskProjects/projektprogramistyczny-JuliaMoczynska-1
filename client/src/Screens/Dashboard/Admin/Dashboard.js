@@ -1,16 +1,13 @@
 import React from "react";
 import { Movies } from "../../../Data/MovieData";
-import { CategoriesData } from "../../../Data/CategoriesData";
 import SideBar from "../SideBar";
 import { FaFilm, FaList, FaStar } from "react-icons/fa";
+import { CategoriesData } from "../../../Data/FilterData";
 
 function Dashboard() {
-    // Przykładowe dane
     const totalMovies = Movies.length;
     const totalCategories = CategoriesData.length;
-    // const totalUsers = 1;
 
-    // Pobierz top ranking filmów (tu wymaga dostosowania w zależności od struktury danych)
     const topMovies = Movies.slice(0, 5);
 
     return (
@@ -36,14 +33,6 @@ function Dashboard() {
                     <p className="text-white">{totalCategories}</p>
                 </div>
 
-                {/* Total Users */}
-                {/* <div className="bg-main p-4 rounded">
-                    <div className="flex items-center">
-                        <FaUser className="text-white mr-2" />
-                        <h3 className="text-lg font-semibold text-white">Total Users</h3>
-                    </div>
-                    <p className="text-white">{totalUsers}</p>
-                </div> */}
 
                 {/* Top Movies */}
                 <div className="bg-main p-4 rounded">

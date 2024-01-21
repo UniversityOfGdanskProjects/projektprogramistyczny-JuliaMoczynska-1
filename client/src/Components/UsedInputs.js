@@ -34,32 +34,50 @@ export const Select = ({ label, options, name, onChange, onBlur, value }) => {
       </>
     );
 };
-  
+
+
 export const Input = ({
-    label,
-    placeholder,
-    type,
-    name,
-    onChange,
-    onBlur,
-    value,
-    bg
-  }) => {
+  label,
+  placeholder,
+  type,
+  name,
+  onChange,
+  onBlur,
+  value,
+  bg
+}) => {
+  if (type === 'file') {
     return (
       <div className="text-sm w-full">
         <label className="text-border font-semibold">{label}</label>
         <input
           name={name}
-          value={value}
+          type="file"
           onChange={onChange}
           onBlur={onBlur}
-          type={type}
-          placeholder={placeholder}
           className={`w-full text-sm mt-2 p-5 border border-border rounded text-white ${
             bg ? "bg-main" : "bg-dry"
           }`}
         />
       </div>
     );
+  }
+
+  return (
+    <div className="text-sm w-full">
+      <label className="text-border font-semibold">{label}</label>
+      <input
+        name={name}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        type={type}
+        placeholder={placeholder}
+        className={`w-full text-sm mt-2 p-5 border border-border rounded text-white ${
+          bg ? "bg-main" : "bg-dry"
+        }`}
+      />
+    </div>
+  );
 };
   

@@ -1,7 +1,8 @@
 
-const logoutService = () => {
-    localStorage.removeItem("userInfo");
-    return null;
-  };
+const logoutService = (setUserInfo) => {
+  setUserInfo(null)
+  localStorage.removeItem("userInfo");
+  return null;
+};
 
 export { logoutService };

@@ -14,8 +14,7 @@ function Register() {
     const navigate = useNavigate();
     const [state, dispatch] = useRegisterReducer();
     
-       // eslint-disable-next-line no-unused-vars
-    const [state2, dispatch2] = useLoginReducer();
+    const [, dispatch2] = useLoginReducer();
 
 
     const formik = useFormik({

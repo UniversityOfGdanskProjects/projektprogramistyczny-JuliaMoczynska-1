@@ -1,6 +1,3 @@
-// moviesActions.js
-
-// import { getAllMoviesService } from "./Movies/AllMovies";
 import toast from "react-hot-toast";
 import { ErrorsAction, tokenProtection } from "../../Protection";
 import { getMovieByIdService } from "../Movies/ByIdMovie";
@@ -9,39 +6,10 @@ import { getRandomMoviesService } from "../Movies/RandomMovies";
 import { reviewMovieService } from "../Movies/ReviewMovie";
 import { deleteMovieService } from "../Movies/DeleteMovie";
 import { deleteAllMoviesService } from "../Movies/DeleteAllMovies";
+import { createMovieService } from "../Movies/CreateMovie";
+import { updateMovieService } from "../Movies/UpdateMovie";
 
 
-// export const getAllMoviesAction = async (
-//     category,
-//     time,
-//     language,
-//     rate,
-//     year,
-//     search,
-//     pageNumber,
-//     dispatch
-//   ) => {
-//     try {
-//       dispatch({ type: "MOVIES_LIST_REQUEST" });
-//       const response = await getAllMoviesService(
-//         category,
-//         time,
-//         language,
-//         rate,
-//         year,
-//         search,
-//         pageNumber
-//       );
-//       dispatch({
-//         type: "MOVIES_LIST_SUCCESS",
-//         payload: response,
-//       });
-//     } catch (error) {
-//       ErrorsAction(error, dispatch, "MOVIES_LIST_FAIL");
-//     }
-// };
-
-// get popular movies action
 export const getPopularAction = async (dispatch) => {
   try {
     dispatch({ type: "POPULAR_MOVIES_REQUEST" });
@@ -55,7 +23,6 @@ export const getPopularAction = async (dispatch) => {
   }
 };
 
-// get random movies action
 export const getRandomAction =  async (dispatch) => {
   try {
     dispatch({ type: "MOVIES_RANDOM_REQUEST" });
@@ -69,7 +36,6 @@ export const getRandomAction =  async (dispatch) => {
   }
 }
 
-// get movie by id action
 export const getMovieByIdAction = async (id, dispatch) => {
   try {
     dispatch({ type: "MOVIE_DETAILS_REQUEST" });
@@ -83,7 +49,6 @@ export const getMovieByIdAction = async (id, dispatch) => {
   }
 };
 
-// review movie action
 export const reviewMovieAction = async ({ id, review }, dispatch, byIdMovieDispatch, getState) => {
     try {
       dispatch({ type: "CREATE_REVIEW_REQUEST" });
@@ -104,8 +69,7 @@ export const reviewMovieAction = async ({ id, review }, dispatch, byIdMovieDispa
     }
 };
 
-// delete movie action
-export const deleteMovieAction = (id) => async (dispatch, getState) => {
+export const deleteMovieAction = async (id, dispatch, getState, navigate) => {
   try {
     dispatch({ type: "DELETE_MOVIE_REQUEST" });
     const response = await deleteMovieService(
@@ -117,13 +81,12 @@ export const deleteMovieAction = (id) => async (dispatch, getState) => {
       payload: response,
     });
     toast.success("Movie deleted successfully");
-    window.location.reload();
+    navigate("/")
   } catch (error) {
     ErrorsAction(error, dispatch, "DELETE_MOVIE_FAIL");
   }
 };
 
-// delete all movies action
 export const deleteAllMoviesAction =  async (dispatch, getState) => {
   try {
     dispatch({ type: "DELETE_ALL_MOVIES_REQUEST" });
@@ -138,6 +101,42 @@ export const deleteAllMoviesAction =  async (dispatch, getState) => {
     window.location.reload();
   } catch (error) {
     ErrorsAction(error, dispatch, "DELETE_ALL_MOVIES_FAIL");
+  }
+};
+
+export const createMovieAction = async (movie, dispatch, getState) => {
+  try {
+    dispatch({ type: "CREATE_MOVIE_REQUEST" });
+    const response = await createMovieService(
+      tokenProtection(getState),
+      movie
+    );
+    dispatch({
+      type: "CREATE_MOVIE_SUCCESS",
+      payload: response,
+    });
+    toast.success("Movie created successfully");
+  } catch (error) {
+    ErrorsAction(error, dispatch, "CREATE_MOVIE_FAIL");
+  }
+};
+
+export const updateMovieAction = async (id, movie, dispatch, moviebyiddispatch, getState) => {
+  try {
+    dispatch({ type: "UPDATE_MOVIE_REQUEST" });
+    const response = await updateMovieService(
+      tokenProtection(getState),
+      id,
+      movie
+    );
+    dispatch({
+      type: "UPDATE_MOVIE_SUCCESS",
+      payload: response,
+    });
+    toast.success("Movie updated successfully");
+    getMovieByIdAction(id, moviebyiddispatch);
+  } catch (error) {
+    ErrorsAction(error, dispatch, "UPDATE_MOVIE_FAIL");
   }
 };
 

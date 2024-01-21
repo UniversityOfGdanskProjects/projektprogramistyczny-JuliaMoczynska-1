@@ -37,7 +37,7 @@ export const CategoriesData = [
     title: "Historical",
   },
   {
-    title: "Science",
+    title: "Science Fiction",
   },
   {
     title: "Mystery",
