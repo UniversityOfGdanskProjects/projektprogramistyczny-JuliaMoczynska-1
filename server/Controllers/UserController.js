@@ -42,7 +42,6 @@ const registerUser = asyncHandler(async (req, res) => {
       res.status(400).json({ message: "Invalid user data" });
         }
     } catch (error) {
-        console.error(error); // Dodaj tę linię
         res.status(500).json({ message: "Server Error" });
     }
 })

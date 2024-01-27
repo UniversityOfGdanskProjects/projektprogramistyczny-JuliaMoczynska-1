@@ -1,4 +1,5 @@
 import { MoviesData } from "../Data/MovieData.js"
+import User from "../Models/UserModels.js"
 import Movie from "../Models/MoviesModel.js";
 import asyncHandler from "express-async-handler";
 
@@ -32,10 +33,18 @@ const getMovies = asyncHandler(async (req, res) => {
       ...(search && { name: { $regex: search, $options: "i" } }),
     };
 
+    if (req.user) {
+      const user = await User.findById(req.user._id);
+      if (user) {
+        const ignoredMovieIds = user.ignoredMovies.map(movie => movie.toString());
+        query._id = { $nin: ignoredMovieIds };
+      }
+    }
+
     // load more movies functionality
     const page = Number(req.query.pageNumber) || 1; // if pageNumber is not provided in query we set it to 1
     const limit = 10; // 10 movies per page
-    const skip = (page - 1) * limit; // skip 2 movies per page
+    const skip = (page - 1) * limit; // skip 10 movies per page
 
     // find movies by query, skip and limit
     const movies = await Movie.find(query)
@@ -240,7 +249,7 @@ const deleteMovie = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Movie not found");
       }
-      Naviga
+      // Naviga
     } catch (error) {
       res.status(400).json({ message: error.message });
     }

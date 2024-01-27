@@ -17,6 +17,21 @@ const reviewSchema = mongoose.Schema(
   }
 );
 
+const roomSchema = mongoose.Schema(
+  {
+    userName: { type: String, required: true },
+    message: { type: String, required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const moviesSchema = mongoose.Schema(
   {
     userId: {
