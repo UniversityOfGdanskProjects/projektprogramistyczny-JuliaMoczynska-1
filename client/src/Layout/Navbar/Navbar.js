@@ -5,6 +5,7 @@ import { CgUser } from "react-icons/cg";
 import { UserContext } from "../../Context/Context.js"
 import { AiFillDelete } from "react-icons/ai";
 import { MdAdd } from "react-icons/md";
+import { BsChatDots } from "react-icons/bs";
 
 function NavBar() {
   const [search, setSearch] = useState("");
@@ -75,6 +76,9 @@ function NavBar() {
             </NavLink>
             <NavLink to="/watchlist" className={`${Hover} relative`}>
                 <MdAdd className="w-6 h-6"/>
+            </NavLink>
+            <NavLink to="/chats" className={`${Hover} relative`}>
+              <BsChatDots className="w-6 h-6" />
             </NavLink>
             <NavLink
               to={

@@ -1,22 +1,19 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-// import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import FlexMovieItems from "../FlexMovieItems";
 import { FaHeart } from "react-icons/fa";
 import Loader from "../Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
-// import { useDispatch, useSelector } from "react-redux";
 import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
 import { UserContext } from "../../Context/Context";
 import { useUserLikeMovieReducer } from "../../Api/User/LikeMovie";
 
 const Swipper = ({ sameClass, movies }) => {
-    const  [favMoviesState, favMoviesDispatch] = useUserFavoriteMoviesReducer();
-    const { isLoadingFav,  isErrorFav, favMovies } = favMoviesState
+    const  [, favMoviesDispatch] = useUserFavoriteMoviesReducer();
     const [ likedMoviesState, likedMoviesDispatch ] = useUserLikeMovieReducer();
-    const { isLoadingLiked,  isErrorLiked, isSuccess } = likedMoviesState
+    const { isLoading: isLoadingLiked } = likedMoviesState
 
     const { userInfo } = useContext(UserContext)
 

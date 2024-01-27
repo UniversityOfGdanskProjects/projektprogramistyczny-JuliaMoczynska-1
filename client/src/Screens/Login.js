@@ -67,7 +67,7 @@ function Login() {
           <div className="w-full">
             <Input
               label="Email"
-              placeholder="netflixo@gmail.com"
+              placeholder="email"
               type="email"
               name="email"
               onChange={formik.handleChange}

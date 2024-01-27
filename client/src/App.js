@@ -19,6 +19,7 @@ import ScrollOnTop from './ScrollOnTop';
 import { UserProvider } from './Context/Context';
 import EditMovie from './Screens/Dashboard/Admin/EditMovie';
 import AddMovie from './Screens/Dashboard/Admin/AddMovie';
+import MovieChat from './Components/Single/MovieChat';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
         <Route path='/users' element={<Users />}/>
         <Route path='/addmovie' element={<AddMovie />}/>
         <Route path="/edit/:id" element={<EditMovie />} />
+        <Route path="/chats" element={<MovieChat />} />
         <Route path='*' element={<NotFound />}/>
       </Routes>
     </ScrollOnTop>
