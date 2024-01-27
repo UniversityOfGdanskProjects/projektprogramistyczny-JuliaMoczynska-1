@@ -11,8 +11,7 @@ import Layout from "../../Layout/Layout";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { MdAdd, MdFavorite } from "react-icons/md";
-import { AiFillDelete } from "react-icons/ai";
+import { MdFavorite, MdPlaylistAdd } from "react-icons/md";
 import { UserContext } from "../../Context/Context";
 import { logoutAction } from "../../Api/Actions/UserActions";
 
@@ -35,6 +34,7 @@ import { useRegisterReducer } from "../../Api/User/Register";
 import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
 import { useUserDeleteIgnoredMoviesReducer } from "../../Api/User/DeleteIgnoredMovies";
 import { useUserDeleteWatchlistReducer } from "../../Api/User/DeleteWatchlist";
+import { BiSolidDislike } from "react-icons/bi";
 
 function SideBar({ children }) {
     const navigate = useNavigate();
@@ -117,7 +117,7 @@ function SideBar({ children }) {
             {
                 name: "Watchlist",
                 link: "/watchlist",
-                icon: MdAdd
+                icon: MdPlaylistAdd,
             },
             {
                 name: "Favorites Movies",
@@ -127,7 +127,7 @@ function SideBar({ children }) {
             {
                 name: "Ignored Movies",
                 link: "/ignore",
-                icon: AiFillDelete
+                icon: BiSolidDislike,
             },
             {
             name: "Change Password",
@@ -145,7 +145,7 @@ function SideBar({ children }) {
             {
                 name: "Watchlist",
                 link: "/watchlist",
-                icon: MdAdd
+                icon: MdPlaylistAdd,
             },
             {
                 name: "Favorites Movies",
@@ -155,7 +155,7 @@ function SideBar({ children }) {
             {
                 name: "Ignored Movies",
                 link: "/ignore",
-                icon: AiFillDelete
+                icon: BiSolidDislike,
             },
             {
                 name: "Change Password",

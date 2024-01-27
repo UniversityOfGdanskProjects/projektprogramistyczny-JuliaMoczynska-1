@@ -8,9 +8,9 @@ import { useUserFavoriteMoviesReducer } from "../Api/User/FavoriteMovies";
 import { MdAdd } from "react-icons/md";
 import { useUserAddToWatchlistReducer } from "../Api/User/AddToWatchlist";
 import { useUserGetWatchlistReducer } from "../Api/User/WatchlistMovies";
-import { AiFillDelete } from "react-icons/ai";
 import { useUserIgnoreMovieReducer } from "../Api/User/IgnoreMovie";
 import { useUserIgnoredMoviesReducer } from "../Api/User/IgnoredMovies";
+import { BiSolidDislike } from "react-icons/bi";
 
 function Movie({ movie }) {
 
@@ -67,7 +67,7 @@ function Movie({ movie }) {
             className={`h-9 w-9 text-sm flex-colo transitions
             hover:bg-subMain  border-2 border-subMain rounded-md  text-white`}
           >
-            <AiFillDelete />
+            <BiSolidDislike />
           </button>
           <button
             onClick={() => AddToWatchList(movie, addToWatchlistDispatch, watchlistDispatch, userInfo)}

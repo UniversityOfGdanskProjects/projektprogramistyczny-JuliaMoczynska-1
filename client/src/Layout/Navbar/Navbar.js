@@ -3,15 +3,15 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaSearch, FaHeart } from "react-icons/fa";
 import { CgUser } from "react-icons/cg";
 import { UserContext } from "../../Context/Context.js"
-import { AiFillDelete } from "react-icons/ai";
-import { MdAdd } from "react-icons/md";
+import { MdPlaylistAdd } from "react-icons/md";
 import { BsChatDots } from "react-icons/bs";
+import { RiQuestionnaireFill } from "react-icons/ri";
+import { BiSolidDislike } from "react-icons/bi";
 
 function NavBar() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const { userInfo } = useContext(UserContext)
-//   const { likedMovies } = useSelector((state) => state.userGetFavoriteMovies);
   const hover = "hover:text-subMain transitions text-white";
   const Hover = ({ isActive }) => (isActive ? "text-subMain" : hover);
 
@@ -63,7 +63,7 @@ function NavBar() {
           {/* menus */}
           <div className="col-span-3 font-medium text-sm hidden xl:gap-14 2xl:gap-20 justify-between lg:flex xl:justify-end items-center">
             <NavLink to="/movies" className={Hover}>
-              Movies
+              Movie
             </NavLink>
             <NavLink to="/favorites" className={`${Hover} relative`}>
               <FaHeart className="w-6 h-6" />
@@ -72,13 +72,16 @@ function NavBar() {
               </div> */}
             </NavLink>
             <NavLink to="/ignore" className={`${Hover} relative`}>
-                <AiFillDelete className="w-6 h-6"/>
+                <BiSolidDislike className="w-6 h-6"/>
             </NavLink>
             <NavLink to="/watchlist" className={`${Hover} relative`}>
-                <MdAdd className="w-6 h-6"/>
+                <MdPlaylistAdd className="w-6 h-6"/>
             </NavLink>
             <NavLink to="/chats" className={`${Hover} relative`}>
               <BsChatDots className="w-6 h-6" />
+            </NavLink>
+            <NavLink to="/movieform" className={`${Hover} relative`}>
+              <RiQuestionnaireFill className="w-6 h-6" />
             </NavLink>
             <NavLink
               to={

@@ -79,7 +79,7 @@ const MovieChat = () => {
   const handleSendMessage = () => {
     if (message.trim() !== '') {  
       if (currentRoom) {
-        socket.emit('send-message', { topic: currentRoom, message: { username: userInfo?.fullName, text: message } });
+        socket.emit('send-message', { topic: currentRoom, message: { username: userInfo?.fullName || "Guest", text: message } });
         setMessage('');
       } else {
         console.log('User is not currently in any room');
@@ -95,7 +95,7 @@ const MovieChat = () => {
         <div className="bg-dry py-4 border border-gray-800 text-center rounded-lg">
           <h2 className="text-2xl font-bold ">Join The Realtime Discussion</h2>
         </div> 
-        <div className="mt-4 py-4 bg-main m-6 p-6 text-center rounded-lg">
+        <div className="mt-4 py-4 bg-dry m-6 p-6 text-center rounded-lg border border-gray-800">
           <h3 className="text-lg font-semibold mb-2">Add New Room:</h3>
           <div className="flex items-center justify-center">
             <input
@@ -106,7 +106,7 @@ const MovieChat = () => {
               className="border text-black bg-dryGray border-gray-600 px-2 py-1 mr-2"
             />
             <button
-              className="bg-dry transitions border border-subMain hover:bg-subMain py-2 px-4 rounded-full"
+              className="bg-main transitions border border-subMain hover:bg-subMain py-2 px-4 rounded-full"
               onClick={handleAddRoom}
             >
               Add Room
@@ -188,6 +188,7 @@ const MovieChat = () => {
           </div>
         )}
       </div>
+
     </Layout>
   );
 };

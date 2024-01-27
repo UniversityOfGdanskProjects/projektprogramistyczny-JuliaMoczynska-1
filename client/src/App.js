@@ -20,6 +20,7 @@ import { UserProvider } from './Context/Context';
 import EditMovie from './Screens/Dashboard/Admin/EditMovie';
 import AddMovie from './Screens/Dashboard/Admin/AddMovie';
 import MovieChat from './Components/Single/MovieChat';
+import MovieForm from './Components/Single/MovieForm';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
         <Route path='/addmovie' element={<AddMovie />}/>
         <Route path="/edit/:id" element={<EditMovie />} />
         <Route path="/chats" element={<MovieChat />} />
+        <Route path="/movieform" element={<MovieForm />} />
         <Route path='*' element={<NotFound />}/>
       </Routes>
     </ScrollOnTop>
