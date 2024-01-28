@@ -3,9 +3,10 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import { connectDB } from "./config/db.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
+import { Server } from 'socket.io';
 import userRouter from "./Routes/UserRouter.js";
 import moviesRouter from "./Routes/MoviesRouter.js"
-import { Server } from 'socket.io';
+import cookies from 'react-cookies';
 import http from 'http';
 import mqtt from 'mqtt';
 import fs from 'fs';
@@ -30,6 +31,8 @@ app.use(errorHandler)
 const PORT = process.env.PORT || 3001;
 
 const server = http.createServer(app);
+
+
 const io = new Server(server, {
     cors: {
       origin: "*",
@@ -64,25 +67,35 @@ export const SocketConnection = (socket) => {
   
     socket.on('submit-feedback', ({ answers, userEmail }) => {
         console.log('Received feedback:', answers, 'from user:', userEmail);
+
+        const userFeedbackKey = `feedback_${userEmail}`;
+        const existingFeedback = cookies.load(userFeedbackKey);
     
-        const feedbackData = fs.readFileSync('feedback.log', 'utf8');
-        const existingFeedback = feedbackData.split('\n').some((line) => {
-        try {
-            const feedback = JSON.parse(line);
-            return feedback.userEmail === userEmail;
-        } catch (error) {
-            return false;
-        }
-        });
+        // const feedbackData = fs.readFileSync('feedback.log', 'utf8');
+        // const existingFeedback = feedbackData.split('\n').some((line) => {
+        // try {
+        //     const feedback = JSON.parse(line);
+        //     return feedback.userEmail === userEmail;
+        // } catch (error) {
+        //     return false;
+        // }
+        // });
     
+        // if (existingFeedback) {
+        // console.log('User already submitted feedback.');
+        // socket.emit('feedback-submitted', { success: false, message: 'User already submitted feedback.' });
+        // return;
+        // }
+
         if (existingFeedback) {
-        console.log('User already submitted feedback.');
-        socket.emit('feedback-submitted', { success: false, message: 'User already submitted feedback.' });
-        return;
+          console.log('User already submitted feedback.');
+          socket.emit('feedback-submitted', { success: false, message: 'User already submitted feedback.' });
+          return;
         }
-    
+
+        cookies.save(userFeedbackKey, answers, { maxAge: 24 * 60 * 60 });
         fs.appendFileSync('feedback.log', JSON.stringify({ ...answers, userEmail }) + '\n');
-    
+
         socket.emit('feedback-submitted', { success: true });
     });
   
@@ -141,6 +154,7 @@ const getAvailableRooms = () => {
 };
 
 io.on('connection', SocketConnection);
+
 server.listen(PORT, ()  => {
   console.log(`Server running in http://localhost/${PORT}`);
 });
