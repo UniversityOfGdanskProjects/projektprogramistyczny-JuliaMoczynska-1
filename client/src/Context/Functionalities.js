@@ -23,8 +23,8 @@ const IfMovieIgnored = (movie) => {
   return ignoredMovies?.find((ignoredMovie) => ignoredMovie?._id === movie?._id);
 };
 
-const LikeMovie = (movie, likedispatch, favdispatch, userInfo) => {
-  return !userInfo
+const LikeMovie = (movie, likedispatch, favdispatch, keycloak) => {
+  return !keycloak.authenticated
     ? toast.error("Please Login to add to favorites")
     : 
       likeMovieAction(
@@ -33,13 +33,13 @@ const LikeMovie = (movie, likedispatch, favdispatch, userInfo) => {
         },
         likedispatch,
         favdispatch,
-        userInfo
+        keycloak.token
       )
 
 };
 
-const AddToWatchList = (movie, addedToWatchlistDispatch, watchlistDispatch, userInfo) => {
-  return !userInfo
+const AddToWatchList = (movie, addedToWatchlistDispatch, watchlistDispatch, keycloak) => {
+  return !keycloak.authenticated
     ? toast.error("Please Login to add to watchlist")
     : 
       addToWatchlistAction(
@@ -48,13 +48,13 @@ const AddToWatchList = (movie, addedToWatchlistDispatch, watchlistDispatch, user
         },
         addedToWatchlistDispatch,
         watchlistDispatch,
-        userInfo
+        keycloak.token
       )
 
 };
 
-const IgnoreMovie = (movie, ignoreMoviesDispatch, ignoredDispatch, userInfo) => {
-  return !userInfo
+const IgnoreMovie = (movie, ignoreMoviesDispatch, ignoredDispatch, keycloak) => {
+  return !keycloak.authenticated
     ? toast.error("Please Login to ignore the movie")
     : ignoreMovieAction(
         {
@@ -62,7 +62,7 @@ const IgnoreMovie = (movie, ignoreMoviesDispatch, ignoredDispatch, userInfo) => 
         },
         ignoreMoviesDispatch,
         ignoredDispatch,
-        userInfo
+        keycloak.token
       );
 };
 

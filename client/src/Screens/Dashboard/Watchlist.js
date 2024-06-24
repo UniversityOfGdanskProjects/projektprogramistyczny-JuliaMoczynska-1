@@ -11,14 +11,17 @@ import { useUserGetWatchlistReducer } from "../../Api/User/WatchlistMovies";
 import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
 import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
 import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 function WatchList() {
     const navigate = useNavigate();
-    const { userInfo } = useContext(UserContext);
+    const { userInfo} = useContext(UserContext);
+    const { keycloak } = useKeycloak();
+
     //watchlist state
     const [watchListState, watchListDispatch] = useUserGetWatchlistReducer();
     const { isLoading, isError, watchList } = watchListState
-    
+
     //delete watchlist state
     const [deleteState, deleteDispatch] = useUserDeleteWatchlistReducer();
     const {isLoading: isLoading2, isError: isError2} =  deleteState
@@ -28,17 +31,17 @@ function WatchList() {
 
     // delete watchlist movies handler
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all movies from watchlist?") && deleteWatchlistAction(deleteDispatch, watchListDispatch, userInfo);
+        window.confirm("Are you sure you want to delete all movies from watchlist?") && deleteWatchlistAction(deleteDispatch, watchListDispatch, keycloak.token);
     };
 
 
     // delete movie handler
     const deleteMovieHandler = (id) => {
-        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, keycloak.token, navigate);
     };
 
     useEffect(() => {
-        getWachlistAction(watchListDispatch, userInfo);
+        getWachlistAction(watchListDispatch, keycloak.token);
         if (isError ) {
             toast.error(isError);
             watchListDispatch({ type: "GET_WATCHLIST_RESET"  });
@@ -47,7 +50,7 @@ function WatchList() {
             toast.error(isError2);
             deleteDispatch({type: "DELETE_WATCHLIST_RESET"})
         }
-    }, [watchListDispatch, deleteDispatch, isError2, userInfo, isError]);
+    }, [watchListDispatch, deleteDispatch, isError2, keycloak, isError]);
 
     return (
         <SideBar>
@@ -69,7 +72,7 @@ function WatchList() {
             ) : watchList.length > 0 ? (
             <Table
                 data={watchList}
-                admin={userInfo?.isAdmin}
+                admin={keycloak.hasRealmRole("admin")}
                 onDeleteHandler={deleteMovieHandler}
 
             />

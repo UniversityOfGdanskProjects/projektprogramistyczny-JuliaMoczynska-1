@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateMovieReducer } from "../../../Api/Movies/CreateMovie";
-import { UserContext } from "../../../Context/Context";
 import { useFormik } from "formik";
 import { movieValidation } from "../../../Components/Validation/MovieValidation";
 import { createMovieAction } from "../../../Api/Actions/MoviesActions";
@@ -9,6 +8,7 @@ import toast from "react-hot-toast";
 import SideBar from "../SideBar";
 import { Input, Message } from "../../../Components/UsedInputs";
 import { InlineError } from "../../../Components/Notfications/Error";
+import { useKeycloak } from "@react-keycloak/web";
 
 
 function AddMovie() {
@@ -19,7 +19,7 @@ function AddMovie() {
     const { isError, isSuccess } = createMovieState
 
 
-    const { userInfo } = useContext(UserContext)
+    const { keycloak } = useKeycloak();
 
     const formik = useFormik({
         initialValues: {
@@ -38,7 +38,7 @@ function AddMovie() {
             createMovieAction({
                 ...values,
                 casts: cast
-              }, createMovieDispatch, userInfo)
+              }, createMovieDispatch, keycloak)
             formik.resetForm();
             setCast([]);
         },

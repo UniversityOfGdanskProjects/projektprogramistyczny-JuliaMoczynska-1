@@ -1,16 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import SideBar from "../SideBar";
-import { UserContext } from "../../../Context/Context";
 import { useAdminGetAllUsersReducer } from "../../../Api/Admin/AllUsers";
 import { useAdminDeleteUserReducer } from "../../../Api/Admin/DeleteUser";
 import { deleteUserAction, getAllUsersAction } from "../../../Api/Actions/UserActions";
 import Loader from "../../../Components/Notfications/Loader";
 import Table2 from "../../../Components/Table2";
 import { Empty } from "../../../Components/Notfications/Empty";
+import { useKeycloak } from "@react-keycloak/web";
 
 function Users() {
-
-    const { userInfo } = useContext(UserContext)
+    const { keycloak } = useKeycloak();
 
     const [ allUsersState, allUsersDispatch ] = useAdminGetAllUsersReducer();
     const { isLoading, isError, users } = allUsersState
@@ -19,18 +18,18 @@ function Users() {
     const { isError: deleteError, isSuccess } = deleteUserState
 
     const deleteMoviesHandler = (id) => {
-        window.confirm("Are you sure you want to delete this user?") && deleteUserAction(id, deleteUserDispatch, userInfo);
+        window.confirm("Are you sure you want to delete this user?") && deleteUserAction(id, deleteUserDispatch, keycloak);
     };
 
     useEffect(() => {
-        getAllUsersAction(allUsersDispatch, userInfo);
+        getAllUsersAction(allUsersDispatch, keycloak);
         if (isError){
             allUsersDispatch({ type: "GET_ALL_USERS_RESET"});
         }
         if (deleteError) {
             deleteUserDispatch({ type: "DELETE_USER_RESET"});
         }
-    }, [allUsersDispatch, deleteUserDispatch, userInfo, isError, deleteError, isSuccess]);
+    }, [allUsersDispatch, deleteUserDispatch, keycloak, isError, deleteError, isSuccess]);
 
     return (
         <SideBar>

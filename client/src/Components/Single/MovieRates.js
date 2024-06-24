@@ -13,6 +13,7 @@ import { reviewMovieAction } from "../../Api/Actions/MoviesActions";
 import { useCreateReviewReducer } from "../../Api/Movies/ReviewMovie";
 import { UserContext } from "../../Context/Context";
 import { useGetMovieDetailsReducer } from "../../Api/Movies/ByIdMovie";
+import { useKeycloak } from "@react-keycloak/web";
 
 const Ratings = [
   {
@@ -46,6 +47,7 @@ function MovieRates({ movie }) {
   const [, byIdMovieDispatch] = useGetMovieDetailsReducer();
   const { isLoading, isError } = createReviewState;
   const { userInfo } = useContext(UserContext);
+  const { keycloak } = useKeycloak();
 
   const formik = useFormik({
   initialValues: {
@@ -58,7 +60,7 @@ function MovieRates({ movie }) {
         await reviewMovieAction({
           id: movie?._id,
           review: values,
-        }, createReviewDispatch, byIdMovieDispatch, userInfo);
+        }, createReviewDispatch, byIdMovieDispatch, keycloak.token);
 
         window.location.reload();
       } catch (error) {

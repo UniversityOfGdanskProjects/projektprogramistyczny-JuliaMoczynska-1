@@ -25,9 +25,9 @@ const loginReducer = (state, action) => {
   }
 };
 
-const loginService = async (user) => {
+const loginService = async (keycloak) => {
   try {
-    const { data } = await Axios.post("/users/login", user);
+    const { data } = await Axios.post("/users/login", keycloak);
     if (data) {
       localStorage.setItem("userInfo", JSON.stringify(data));
     }

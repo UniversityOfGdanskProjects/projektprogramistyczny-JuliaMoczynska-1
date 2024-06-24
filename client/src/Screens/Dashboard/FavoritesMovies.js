@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
 import { deleteFavoriteMoviesAction, getFavoriteMoviesAction } from "../../Api/Actions/UserActions";
@@ -6,15 +6,15 @@ import toast from "react-hot-toast";
 import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
-import { UserContext } from "../../Context/Context";
 import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
 import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
 import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
 import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 function FavoritesMovies() {
     const navigate = useNavigate();
-    const { userInfo } = useContext(UserContext);
+    const { keycloak } = useKeycloak();
     //favorites state
     const [favoritesMovies, favoritesMoviesDispatch] = useUserFavoriteMoviesReducer();
     const { isLoading, isError, likedMovies } = favoritesMovies
@@ -28,16 +28,16 @@ function FavoritesMovies() {
 
     // delete favorites movies handler
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, userInfo);
+        window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, keycloak.token);
     };
 
     // delete movie handler
     const deleteMovieHandler = (id) => {
-        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, keycloak.token, navigate);
     };
 
     useEffect(() => {
-        getFavoriteMoviesAction(favoritesMoviesDispatch, userInfo);
+        getFavoriteMoviesAction(favoritesMoviesDispatch, keycloak.token);
         if (isError ) {
             toast.error(isError);
             favoritesMoviesDispatch({ type: "GET_FAVORITE_MOVIES_RESET"  });
@@ -46,7 +46,7 @@ function FavoritesMovies() {
             toast.error(isError2);
             deleteDispatch({type: "DELETE_FAVORITE_MOVIES_RESET"})
         }
-    }, [favoritesMoviesDispatch, deleteDispatch, isError2, userInfo, isError]);
+    }, [favoritesMoviesDispatch, deleteDispatch, isError2, keycloak, isError]);
 
     return (
         <SideBar>
@@ -68,7 +68,7 @@ function FavoritesMovies() {
             ) : likedMovies.length > 0 ? (
             <Table
                 data={likedMovies}
-                admin={userInfo?.isAdmin}
+                admin={keycloak.hasRealmRole("admin")}
                 onDeleteHandler={deleteMovieHandler}
             />
             ) : (

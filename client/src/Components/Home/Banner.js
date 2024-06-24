@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import FlexMovieItems from "../FlexMovieItems";
@@ -7,7 +7,7 @@ import Loader from "../Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
 import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
-import { UserContext } from "../../Context/Context";
+import { useKeycloak } from "@react-keycloak/web";
 import { useUserLikeMovieReducer } from "../../Api/User/LikeMovie";
 
 const Swipper = ({ sameClass, movies }) => {
@@ -15,7 +15,7 @@ const Swipper = ({ sameClass, movies }) => {
     const [ likedMoviesState, likedMoviesDispatch ] = useUserLikeMovieReducer();
     const { isLoading: isLoadingLiked } = likedMoviesState
 
-    const { userInfo } = useContext(UserContext)
+    const { keycloak } = useKeycloak();
 
     // if liked function
     const isLiked = (movie) => {
@@ -54,7 +54,7 @@ const Swipper = ({ sameClass, movies }) => {
                     More
                 </Link>
                 <button
-                    onClick={() => LikeMovie(movie, likedMoviesDispatch, favMoviesDispatch, userInfo)}
+                    onClick={() => LikeMovie(movie, likedMoviesDispatch, favMoviesDispatch, keycloak)}
                     disabled={isLiked(movie) || isLoadingLiked}
                     className={`bg-white
                       ${isLiked(movie) ? "text-subMain" : "text-white"}

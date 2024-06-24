@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Message } from "../../../Components/UsedInputs";
 import SideBar from "../SideBar";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,13 +8,13 @@ import { useUpdateMovieReducer } from "../../../Api/Movies/UpdateMovie";
 import { useGetMovieDetailsReducer } from "../../../Api/Movies/ByIdMovie";
 import { useFormik } from "formik";
 import { getMovieByIdAction, updateMovieAction } from "../../../Api/Actions/MoviesActions";
-import { UserContext } from "../../../Context/Context";
+import { useKeycloak } from "@react-keycloak/web";
 
 function EditMovie() {
     const [cast, setCast] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
-    const { userInfo } = useContext(UserContext)
+    const { keycloak } = useKeycloak();
 
     const [byIdState, byIdDispatch] = useGetMovieDetailsReducer();
     const { movie } = byIdState
@@ -44,7 +44,7 @@ function EditMovie() {
           updateMovieAction(movie?._id, {
             ...values,
             casts: cast
-          }, updateMovieDispatch, byIdDispatch, userInfo)
+          }, updateMovieDispatch, byIdDispatch, keycloak)
           formik.resetForm();
           setCast([]);
       },

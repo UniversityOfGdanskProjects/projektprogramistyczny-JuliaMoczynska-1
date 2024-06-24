@@ -77,12 +77,12 @@ function NavBar() {
             <NavLink to="/watchlist" className={`${Hover} relative`}>
                 <MdPlaylistAdd className="w-6 h-6"/>
             </NavLink>
-            <NavLink to="/chats" className={`${Hover} relative`}>
+            {/* <NavLink to="/chats" className={`${Hover} relative`}>
               <BsChatDots className="w-6 h-6" />
-            </NavLink>
-            <NavLink to="/movieform" className={`${Hover} relative`}>
+            </NavLink> */}
+            {/* <NavLink to="/movieform" className={`${Hover} relative`}>
               <RiQuestionnaireFill className="w-6 h-6" />
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to={
                 userInfo?.isAdmin

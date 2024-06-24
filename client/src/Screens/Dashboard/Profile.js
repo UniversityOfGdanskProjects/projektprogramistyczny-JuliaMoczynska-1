@@ -9,12 +9,14 @@ import { UserContext } from "../../Context/Context";
 import { useUserUpdateProfileReducer } from "../../Api/User/UpdateUser";
 import { updateProfileAction } from "../../Api/Actions/UserActions";
 import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 function Profile() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [updateState, updateDispatch] = useUserUpdateProfileReducer();
   const { isLoading, isError, isSuccess } = updateState;
   const navigate = useNavigate();
+  const { keycloak } = useKeycloak();
 
   const formik = useFormik({
     initialValues: {
@@ -24,7 +26,7 @@ function Profile() {
     },
     validationSchema: ProfileValidation,
     onSubmit: (values) => {
-      updateProfileAction({ ...values }, updateDispatch, userInfo, setUserInfo);
+      updateProfileAction({ ...values }, updateDispatch, userInfo, setUserInfo, keycloak.token);
     },
   });
 

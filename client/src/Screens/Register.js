@@ -8,13 +8,16 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { RegisterValidation } from "../Components/Validation/UserValidation";
 import { useRegisterReducer, registerService } from "../Api/User/Register.js"; 
-import { useLoginReducer } from "../Api/User/Login.js"; 
+// import { useLoginReducer } from "../Api/User/Login.js"; 
+// import { useKeycloak } from "@react-keycloak/web";
 
 function Register() {
     const navigate = useNavigate();
     const [state, dispatch] = useRegisterReducer();
     
-    const [, dispatch2] = useLoginReducer();
+    // const [, dispatch2] = useLoginReducer();
+
+    // const { keycloak,  } = useKeycloak();
 
 
     const formik = useFormik({
@@ -29,7 +32,7 @@ function Register() {
           try {
             const data = await registerService(values);
             dispatch({ type: "USER_REGISTER_SUCCESS", payload: data });
-            dispatch2({ type: "USER_LOGIN_SUCCESS", payload: data });
+            // dispatch2({ type: "USER_LOGIN_SUCCESS", payload: data });
           } catch (error) {
             dispatch({ type: "USER_REGISTER_FAIL", payload: error });
           }
@@ -47,12 +50,37 @@ function Register() {
         if (isSuccess) {
           toast.success(`Welcome ${userInfo?.fullName}`);
           dispatch({ type: "USER_REGISTER_RESET" });
+          navigate("/login");
         }
         if (isError) {
           toast.error(isError);
           dispatch({ type: "USER_REGISTER_RESET" });
         }
     }, [userInfo, isSuccess, isError, navigate, dispatch]);
+
+  //   useEffect(() => {
+  //     // Sprawdź, czy użytkownik jest zalogowany
+  //     if (keycloak.authenticated) {
+  //       // Pobierz role użytkownika
+  //       const roles = keycloak.tokenParsed.realm_access.roles;
+  //       // Sprawdź, czy użytkownik ma rolę admina
+  //       const isAdmin = roles.includes('admin');
+        
+  //       if (isAdmin) {
+  //         navigate("/dashboard");
+  //       } else {
+  //         navigate("/");
+  //       }
+  //     }
+  //     if (isSuccess) {
+  //       toast.success(`Welcome ${userInfo?.fullName}`);
+  //       dispatch({ type: "USER_REGISTER_RESET" });
+  //     }
+  //     if (isError) {
+  //       toast.error(isError);
+  //       dispatch({ type: "USER_REGISTER_RESET" });
+  //     }
+  // }, [keycloak.authenticated, isSuccess, isError, userInfo, navigate, dispatch, keycloak.tokenParsed.realm_access.roles]);
 
   return (
     <Layout>

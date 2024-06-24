@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../Context/Context";
 import { useUserLikeMovieReducer } from "../Api/User/LikeMovie";
 import { FaHeart } from "react-icons/fa";
 import { LikeMovie, AddToWatchList,  IfMovieLiked, IfAddedToWatchlist, IfMovieIgnored, IgnoreMovie } from "../Context/Functionalities";
@@ -11,10 +10,12 @@ import { useUserGetWatchlistReducer } from "../Api/User/WatchlistMovies";
 import { useUserIgnoreMovieReducer } from "../Api/User/IgnoreMovie";
 import { useUserIgnoredMoviesReducer } from "../Api/User/IgnoredMovies";
 import { BiSolidDislike } from "react-icons/bi";
+import { useKeycloak } from "@react-keycloak/web";
 
 function Movie({ movie }) {
 
-  const { userInfo } = useContext(UserContext)
+  const { keycloak } = useKeycloak();
+  // const { userInfo } = useContext(UserContext)
 
   //like movie
   const [ likeMoviesState, likeMoviesDispatch ] = useUserLikeMovieReducer();
@@ -54,7 +55,7 @@ function Movie({ movie }) {
         <div className="absolute flex-btn gap-2 bottom-0 right-0 left-0 bg-main bg-opacity-60 text-white px-4 py-3">
           <h3 className="font-semibold truncate">{movie?.name}</h3>
           <button
-            onClick={() => LikeMovie(movie, likeMoviesDispatch, favMoviesDispatch, userInfo)}
+            onClick={() => LikeMovie(movie, likeMoviesDispatch, favMoviesDispatch, keycloak)}
             disabled={isLiked || isLoading}
             className={`h-9 w-9 text-sm flex-colo transitions
             hover:bg-subMain  border-2 border-subMain rounded-md  text-white`}
@@ -62,7 +63,7 @@ function Movie({ movie }) {
             <FaHeart />
           </button>
           <button
-            onClick={() => IgnoreMovie(movie, ignoreMoviesDispatch, ignoredDispatch, userInfo)}
+            onClick={() => IgnoreMovie(movie, ignoreMoviesDispatch, ignoredDispatch, keycloak)}
             disabled={isMovieIgnored || isLoading3}
             className={`h-9 w-9 text-sm flex-colo transitions
             hover:bg-subMain  border-2 border-subMain rounded-md  text-white`}
@@ -70,7 +71,7 @@ function Movie({ movie }) {
             <BiSolidDislike />
           </button>
           <button
-            onClick={() => AddToWatchList(movie, addToWatchlistDispatch, watchlistDispatch, userInfo)}
+            onClick={() => AddToWatchList(movie, addToWatchlistDispatch, watchlistDispatch, keycloak)}
             disabled={ isAddedToWatchlist || isLoading2}
             className={`h-9 w-9 text-sm flex-colo transitions
             hover:bg-subMain  border-2 border-subMain rounded-md  text-white`}

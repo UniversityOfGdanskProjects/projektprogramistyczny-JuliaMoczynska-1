@@ -1,5 +1,4 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../Context/Context";
+import { useEffect } from "react";
 import { useUserIgnoredMoviesReducer } from "../../Api/User/IgnoredMovies";
 import { useUserDeleteIgnoredMoviesReducer } from "../../Api/User/DeleteIgnoredMovies";
 import { deleteIgnoredMoviesAction, getIgnoredMoviesAction } from "../../Api/Actions/UserActions";
@@ -11,10 +10,12 @@ import SideBar from "./SideBar";
 import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
 import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
 import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 function IgnoredMovies() { 
     const navigate = useNavigate();
-    const { userInfo } = useContext(UserContext);
+    const { keycloak } = useKeycloak();
+
     const [ignoredMoviesState, ignoredMoviesDispatch] = useUserIgnoredMoviesReducer(); 
     const { isLoading, isError, ignoredMovies } = ignoredMoviesState
     
@@ -25,15 +26,15 @@ function IgnoredMovies() {
 
 
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all ignored movies?") && deleteIgnoredMoviesAction(deleteDispatch, ignoredMoviesDispatch, userInfo);
+        window.confirm("Are you sure you want to delete all ignored movies?") && deleteIgnoredMoviesAction(deleteDispatch, ignoredMoviesDispatch, keycloak);
     };
 
     const deleteMovieHandler = (id) => {
-        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate);
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, keycloak, navigate);
     };
 
     useEffect(() => {
-        getIgnoredMoviesAction(ignoredMoviesDispatch, userInfo);
+        getIgnoredMoviesAction(ignoredMoviesDispatch, keycloak.token);
         if (isError) {
             toast.error(isError);
             ignoredMoviesDispatch({ type: "GET_IGNORED_MOVIES_RESET" });
@@ -42,7 +43,7 @@ function IgnoredMovies() {
             toast.error(isError2);
             deleteDispatch({ type: "DELETE_IGNORED_MOVIES_RESET" });
         }
-    }, [ignoredMoviesDispatch, deleteDispatch, isError2, userInfo, isError]);
+    }, [ignoredMoviesDispatch, deleteDispatch, isError2, keycloak, isError]);
 
     return (
         <SideBar>
@@ -62,7 +63,7 @@ function IgnoredMovies() {
                 {isLoading ? (
                     <Loader />
                 ) : ignoredMovies.length > 0 ? (
-                    <Table data={ignoredMovies} admin={userInfo?.isAdmin} onDeleteHandler={deleteMovieHandler}
+                    <Table data={ignoredMovies} admin={keycloak.hasRealmRole("admin")} onDeleteHandler={deleteMovieHandler}
                     />
                 ) : (
                     <Empty message="You have no ignored movies" />
