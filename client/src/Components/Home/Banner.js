@@ -1,26 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import FlexMovieItems from "../FlexMovieItems";
-import { FaHeart } from "react-icons/fa";
 import Loader from "../Notfications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
-import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
-import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
-import { UserContext } from "../../Context/Context";
-import { useUserLikeMovieReducer } from "../../Api/User/LikeMovie";
+
 
 const Swipper = ({ sameClass, movies }) => {
-    const  [, favMoviesDispatch] = useUserFavoriteMoviesReducer();
-    const [ likedMoviesState, likedMoviesDispatch ] = useUserLikeMovieReducer();
-    const { isLoading: isLoadingLiked } = likedMoviesState
-
-    const { userInfo } = useContext(UserContext)
-
-    // if liked function
-    const isLiked = (movie) => {
-        return IfMovieLiked(movie);
-    };
 
     return (
         <Swiper
@@ -53,15 +39,6 @@ const Swipper = ({ sameClass, movies }) => {
                 >
                     More
                 </Link>
-                <button
-                    onClick={() => LikeMovie(movie, likedMoviesDispatch, favMoviesDispatch, userInfo)}
-                    disabled={isLiked(movie) || isLoadingLiked}
-                    className={`bg-white
-                      ${isLiked(movie) ? "text-subMain" : "text-white"}
-                      hover:text-subMain transitions  px-4 py-3 rounded text-sm bg-opacity-30`}
-                >
-                    <FaHeart />
-                </button>
                 </div>
             </div>
             </SwiperSlide>

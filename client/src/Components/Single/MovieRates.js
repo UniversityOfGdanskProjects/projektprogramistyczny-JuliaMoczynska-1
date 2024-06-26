@@ -153,17 +153,6 @@ function MovieRates({ movie }) {
                   key={review?._id}
                   className="md:grid flex flex-col w-full grid-cols-12 gap-6 bg-dry p-4 border border-gray-800 rounded-lg"
                 >
-                  <div className="col-span-2 bg-main hidden md:block">
-                    <img
-                      src={
-                        review?.userImage
-                          ? review.userImage
-                          : "/images/user.png"
-                      }
-                      alt={review?.userName}
-                      className="w-full h-24 rounded-lg object-cover"
-                    />
-                  </div>
                   <div className="col-span-7 flex flex-col gap-2">
                     <h2>{review?.userName}</h2>
                     <p className="text-xs leading-6 font-medium text-text">

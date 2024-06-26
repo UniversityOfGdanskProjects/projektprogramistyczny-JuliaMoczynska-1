@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaSearch, FaHeart } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { CgUser } from "react-icons/cg";
 import { UserContext } from "../../Context/Context.js"
-import { MdPlaylistAdd } from "react-icons/md";
-import { BiSolidDislike } from "react-icons/bi";
 import { useKeycloak } from "@react-keycloak/web";
 
 function NavBar() {
@@ -63,26 +61,14 @@ function NavBar() {
           {/* menus */}
           <div className="col-span-3 font-medium text-sm hidden xl:gap-14 2xl:gap-20 justify-between lg:flex xl:justify-end items-center">
             <NavLink to="/movies" className={Hover}>
-              Movie
-            </NavLink>
-            <NavLink to="/favorites" className={`${Hover} relative`}>
-              <FaHeart className="w-6 h-6" />
-              {/* <div className="w-5 h-5 flex-colo rounded-full text-xs bg-subMain text-white absolute -top-5 -right-1">
-                {likedMovies?.length || 0}
-              </div> */}
-            </NavLink>
-            <NavLink to="/ignore" className={`${Hover} relative`}>
-                <BiSolidDislike className="w-6 h-6"/>
-            </NavLink>
-            <NavLink to="/watchlist" className={`${Hover} relative`}>
-                <MdPlaylistAdd className="w-6 h-6"/>
+              All movies
             </NavLink>
             <NavLink
               to={
                 userInfo && keycloak.authenticated && keycloak.hasRealmRole("admin")
                   ? "/dashboard"
                   : userInfo && keycloak.authenticated
-                  ? "/password"
+                  ? "/dashboard"
                   : "/login"
               }
               className={Hover}

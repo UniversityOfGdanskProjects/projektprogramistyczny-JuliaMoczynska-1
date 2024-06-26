@@ -3,7 +3,6 @@ import { BsFillGridFill } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import {
   RiMovie2Fill,
-  RiLockPasswordLine,
   RiLogoutCircleLine,
   RiFileSettingsFill,
 } from "react-icons/ri";
@@ -11,19 +10,10 @@ import Layout from "../../Layout/Layout";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { MdFavorite, MdPlaylistAdd } from "react-icons/md";
 import { UserContext } from "../../Context/Context";
 import { logoutAction } from "../../Api/Actions/UserActions";
 
 import { useLoginReducer } from "../../Api/User/Login";
-import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
-import { useUserLikeMovieReducer } from "../../Api/User/LikeMovie";
-import { useUserIgnoredMoviesReducer } from "../../Api/User/IgnoredMovies";
-import { useUserIgnoreMovieReducer } from "../../Api/User/IgnoreMovie";
-import { useUserGetWatchlistReducer } from "../../Api/User/WatchlistMovies";
-import { useUserAddToWatchlistReducer } from "../../Api/User/AddToWatchlist";
-import { useUserUpdateProfileReducer } from "../../Api/User/UpdateUser";
-import { useUserChangePasswordReducer } from "../../Api/User/ChangePassword";
 import { useAdminGetAllUsersReducer } from "../../Api/Admin/AllUsers";
 import { useAdminDeleteUserReducer } from "../../Api/Admin/DeleteUser";
 import { useGetMovieDetailsReducer } from "../../Api/Movies/ByIdMovie";
@@ -31,10 +21,6 @@ import { useCreateReviewReducer } from "../../Api/Movies/ReviewMovie";
 import { useCreateMovieReducer } from "../../Api/Movies/CreateMovie";
 import { useUpdateMovieReducer } from "../../Api/Movies/UpdateMovie";
 import { useRegisterReducer } from "../../Api/User/Register";
-import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
-import { useUserDeleteIgnoredMoviesReducer } from "../../Api/User/DeleteIgnoredMovies";
-import { useUserDeleteWatchlistReducer } from "../../Api/User/DeleteWatchlist";
-import { BiSolidDislike } from "react-icons/bi";
 
 import { useKeycloak } from "@react-keycloak/web";
 
@@ -45,17 +31,7 @@ function SideBar({ children }) {
 
     const [, loginDispatch] = useLoginReducer();
     const [,registerDispatch] = useRegisterReducer();
-    const [, userFavoriteMoviesDispatch] = useUserFavoriteMoviesReducer();
-    const [, userDeleteFavoriteMoviesDispatch] = useUserDeleteFavoriteMoviesReducer();
-    const [, userLikeMovieDispatch] = useUserLikeMovieReducer();
-    const [, userIgnoredMoviesDispatch] = useUserIgnoredMoviesReducer();
-    const [, userDeleteIgnoredMoviesDispatch] = useUserDeleteIgnoredMoviesReducer(); 
-    const [, userIgnoreMovieDispatch] = useUserIgnoreMovieReducer();
-    const [, userWatchlistDispatch] = useUserGetWatchlistReducer();
-    const [, userDeleteWatchlistDispatch] = useUserDeleteWatchlistReducer();
-    const [, userAddToWatchlistDispatch] = useUserAddToWatchlistReducer();
-    const [, userUpdateProfileDispatch] = useUserUpdateProfileReducer();
-    const [, userChangePasswordDispatch] = useUserChangePasswordReducer();
+
     const [, adminGetAllUsersDispatch] = useAdminGetAllUsersReducer();
     const [, adminDeleteUserDispatch] = useAdminDeleteUserReducer();
     const [, getMovieDetailsDispatch] = useGetMovieDetailsReducer();
@@ -70,20 +46,7 @@ function SideBar({ children }) {
             loginDispatch,
             registerDispatch,
 
-            userFavoriteMoviesDispatch, 
-            userDeleteFavoriteMoviesDispatch,
-            userLikeMovieDispatch,
 
-            userIgnoredMoviesDispatch, 
-            userDeleteIgnoredMoviesDispatch,
-            userIgnoreMovieDispatch,
-
-            userWatchlistDispatch,
-            userDeleteWatchlistDispatch,
-            userAddToWatchlistDispatch,
-
-            userUpdateProfileDispatch,
-            userChangePasswordDispatch,
             adminGetAllUsersDispatch,
             adminDeleteUserDispatch,
             getMovieDetailsDispatch,
@@ -96,7 +59,7 @@ function SideBar({ children }) {
         navigate("/login");
     };
 
-    const SideLinks = keycloak.hasRealmRole("admin")
+    const SideLinks = keycloak.authenticated && keycloak.hasRealmRole("admin")
         ? [
             {
                 name: "Dashboard",
@@ -118,53 +81,19 @@ function SideBar({ children }) {
                 link: "/users",
                 icon: FaUsers,
             },
-            {
-                name: "Watchlist",
-                link: "/watchlist",
-                icon: MdPlaylistAdd,
-            },
-            {
-                name: "Favorites Movies",
-                link: "/favorites",
-                icon: MdFavorite
-            },
-            {
-                name: "Ignored Movies",
-                link: "/ignore",
-                icon: BiSolidDislike,
-            },
-            {
-            name: "Change Password",
-            link: "/password",
-            icon: RiLockPasswordLine,
-            },
+ 
         ]
         : keycloak.authenticated
-        ? [
+        ? [            
+            {
+                name: "Dashboard",
+                link: "/dashboard",
+                icon: BsFillGridFill,
+            },
             {
                 name: "Profile",
                 link: "/profile",
                 icon: RiFileSettingsFill,
-            },
-            {
-                name: "Watchlist",
-                link: "/watchlist",
-                icon: MdPlaylistAdd,
-            },
-            {
-                name: "Favorites Movies",
-                link: "/favorites",
-                icon: MdFavorite
-            },
-            {
-                name: "Ignored Movies",
-                link: "/ignore",
-                icon: BiSolidDislike,
-            },
-            {
-                name: "Change Password",
-                link: "/password",
-                icon: RiLockPasswordLine,
             },
         ]
         : [];

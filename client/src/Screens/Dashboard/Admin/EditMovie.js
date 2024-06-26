@@ -72,12 +72,10 @@ function EditMovie() {
             video: movie.video || ""
         });
     }
-      // if its success then reset form and navigate to editMovie
       if (isSuccess) {
         updateMovieDispatch({ type: "UPDATE_MOVIE_RESET" });
         navigate(`/edit/${id}`);
       }
-      // if error then show error
       if (editError) {
         toast.error("Something went wrong");
         updateMovieDispatch({ type: "UPDATE_MOVIE_RESET" });

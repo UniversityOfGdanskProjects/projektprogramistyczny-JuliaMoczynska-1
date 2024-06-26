@@ -1,5 +1,4 @@
 import React from "react";
-import {  FaPlay } from "react-icons/fa";
 import FlexMovieItems from "../FlexMovieItems";
 import Rating from "../Stars";
 
@@ -43,17 +42,6 @@ function MovieInfo({ movie }) {
                     Language :{" "}
                     <span className="ml-2 truncate">{movie?.language}</span>
                   </p>
-                </div>
-                {/* watch button */}
-                <div className="sm:col-span-2 col-span-3 flex justify-end font-medium text-sm">
-                <a
-                  href={movie?.video} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-dry py-4 hover:bg-subMain transitions border-2 border-subMain rounded-full flex-rows gap-4 w-full sm:py-3"
-                >
-                  <FaPlay className="w-3 h-3" /> Watch Trailer
-                </a>
                 </div>
               </div>
               {/* ratings */}

@@ -26,11 +26,8 @@ const registerReducer = (state, action) => {
 
 const registerService = async (user) => {
   try {
-    const { data } = await Axios.post("/users", user);
-    if (data) {
-      localStorage.setItem("userInfo", JSON.stringify(data));
-    }
-    return data;
+    const { res } = await Axios.post("/users", user);
+    return res.data.exists;
   } catch (error) {
     throw error.response.data.message;
   }

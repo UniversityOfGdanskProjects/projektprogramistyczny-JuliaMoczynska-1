@@ -33,6 +33,7 @@ function Login() {
         setUserInfo(data)
         keycloak.login()
         dispatch({ type: "USER_LOGIN_SUCCESS", payload: data });
+        navigate("/");
       } catch (error) {
         console.log("Odrzucenie logowania")
         dispatch({ type: "USER_LOGIN_FAIL", payload: error });
@@ -50,18 +51,9 @@ function Login() {
   }, [isError, dispatch]);
 
   useEffect(() => {
-    // if (userInfo?.isAdmin && keycloak.authenticated) {
-    //   navigate("/dashboard");
-    // } else if (userInfo && keycloak.authenticated) {
-    //   navigate("/");
-    // }
-    // if (isSuccess) {
-    //   toast.success(`Welcome back ${userInfo?.fullName}`);
-    // }
-    // handleLoginError();
-    if (userInfo?.isAdmin) {
+    if (userInfo?.isAdmin && keycloak.authenticated && keycloak.hasRealmRole("admin")) {
       navigate("/dashboard");
-    } else if (userInfo) {
+    } else if (userInfo && keycloak.authenticated) {
       navigate("/");
     }
     if (isSuccess) {
@@ -69,7 +61,7 @@ function Login() {
     }
     handleLoginError();
 
-  }, [userInfo, isSuccess, navigate, handleLoginError]);
+  }, [userInfo, keycloak, isSuccess, navigate, handleLoginError]);
 
   return (
     <Layout>

@@ -103,19 +103,6 @@ function Dashboard() {
                         </tbody>
                     </table>
                 </div>
-
-                {/* Top Users */}
-                {/* <div className="bg-main p-4 rounded">
-                    <div className="flex items-center">
-                        <FaChartBar className="text-white mr-2" />
-                        <h3 className="text-lg font-semibold text-white">Top Users</h3>
-                    </div>
-                    <ul className="text-white">
-                        {topUsers.map((user, index) => (
-                            <li key={index}>{user.username}</li>
-                        ))}
-                    </ul>
-                </div> */}
             </div>
         </SideBar>
     );

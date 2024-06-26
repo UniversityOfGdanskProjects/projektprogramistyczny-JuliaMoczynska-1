@@ -9,10 +9,6 @@ import Register from './Screens/Register';
 import Profile from './Screens/Dashboard/Profile';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
-import Password from './Screens/Dashboard/Password';
-import FavoritesMovies from './Screens/Dashboard/FavoritesMovies';
-import IgnoredMovies from './Screens/Dashboard/IgnoredMovies';
-import WatchList from './Screens/Dashboard/Watchlist';
 import Dashboard from './Screens/Dashboard/Admin/Dashboard';
 import Users from './Screens/Dashboard/Admin/Users';
 import ScrollOnTop from './ScrollOnTop';
@@ -37,10 +33,6 @@ function App() {
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register />}/>
         <Route path='/profile' element={<Profile />}/>
-        <Route path='/password' element={<Password />}/>
-        <Route path='/favorites' element={<FavoritesMovies />}/>
-        <Route path='/ignore' element={<IgnoredMovies />}/>
-        <Route path='/watchlist' element={<WatchList />}/>
         <Route path='/dashboard' element={<Dashboard />}/>
         <Route path='/users' element={<Users />}/>
         <Route path='/addmovie' element={<AddMovie />}/>
