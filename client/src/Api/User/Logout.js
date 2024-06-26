@@ -1,8 +1,7 @@
 
-const logoutService = (setUserInfo, keycloak) => {
+const logoutService = (setUserInfo) => {
   setUserInfo(null)
   localStorage.removeItem("userInfo");
-  keycloak.logout()
   return null;
 };
 

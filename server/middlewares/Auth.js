@@ -9,6 +9,7 @@ const generateToken = (id) => {
   });
 };
 
+// protection middleware
 const protect = asyncHandler(async (req, res, next) => {
   let token;
   // check if token exists in headers
@@ -37,26 +38,6 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-// // admin middleware
-// const admin = (req, res, next) => {
-//   if (req.user && req.user.isAdmin) {
-//     next();
-//   } else {
-//     res.status(401);
-//     throw new Error("Not authorized as an admin");
-//   }
-// };
-
-// // Middleware do uwierzytelniania
-// const protect = asyncHandler(async(req, res, next) => {
-//   if (req.kauth && req.kauth.grant) {
-//     // Uwierzytelniony użytkownik
-//     return next();
-//   } else {
-//     return res.status(401).send('Unauthorized');
-//   }
-// });
-
 // admin middleware
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
@@ -68,15 +49,3 @@ const admin = (req, res, next) => {
 };
 
 export { generateToken, protect, admin };
-
-// // Middleware do sprawdzania roli administratora
-// const admin = asyncHandler(async(req, res, next) =>{
-//   if (req.kauth && req.kauth.grant && req.kauth.grant.access_token.hasRealmRole('admin')) {
-//     // Uwierzytelniony użytkownik z rolą admina
-//     return next();
-//   } else {
-//     return res.status(403).send('Forbidden');
-//   }
-// });
-
-// export { generateToken, protect, admin };

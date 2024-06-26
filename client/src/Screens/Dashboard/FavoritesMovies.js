@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Table from "../../Components/Table";
 import SideBar from "./SideBar";
 import { deleteFavoriteMoviesAction, getFavoriteMoviesAction } from "../../Api/Actions/UserActions";
@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Loader from "../../Components/Notfications/Loader";
 import { Empty } from "../../Components/Notfications/Empty";
 import { useUserFavoriteMoviesReducer } from "../../Api/User/FavoriteMovies";
+import { UserContext } from "../../Context/Context";
 import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavoriteMovies";
 import { useDeleteMovieReducer } from "../../Api/Movies/DeleteMovie";
 import { deleteMovieAction } from "../../Api/Actions/MoviesActions";
@@ -14,7 +15,7 @@ import { useKeycloak } from "@react-keycloak/web";
 
 function FavoritesMovies() {
     const navigate = useNavigate();
-    const { keycloak } = useKeycloak();
+    const { userInfo } = useContext(UserContext);
     //favorites state
     const [favoritesMovies, favoritesMoviesDispatch] = useUserFavoriteMoviesReducer();
     const { isLoading, isError, likedMovies } = favoritesMovies
@@ -23,21 +24,22 @@ function FavoritesMovies() {
     const [deleteState, deleteDispatch] = useUserDeleteFavoriteMoviesReducer();
     const {isLoading: isLoading2, isError: isError2} =  deleteState
 
+    const { keycloak } = useKeycloak();
 
     const [, deleteOneMovieDispatch] = useDeleteMovieReducer();
 
     // delete favorites movies handler
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, keycloak.token);
+        window.confirm("Are you sure you want to delete all movies?") && deleteFavoriteMoviesAction(deleteDispatch,favoritesMoviesDispatch, userInfo, keycloak);
     };
 
     // delete movie handler
     const deleteMovieHandler = (id) => {
-        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, keycloak.token, navigate);
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate, keycloak);
     };
 
     useEffect(() => {
-        getFavoriteMoviesAction(favoritesMoviesDispatch, keycloak.token);
+        getFavoriteMoviesAction(favoritesMoviesDispatch, userInfo, keycloak);
         if (isError ) {
             toast.error(isError);
             favoritesMoviesDispatch({ type: "GET_FAVORITE_MOVIES_RESET"  });
@@ -46,7 +48,7 @@ function FavoritesMovies() {
             toast.error(isError2);
             deleteDispatch({type: "DELETE_FAVORITE_MOVIES_RESET"})
         }
-    }, [favoritesMoviesDispatch, deleteDispatch, isError2, keycloak, isError]);
+    }, [favoritesMoviesDispatch, deleteDispatch, isError2, userInfo, isError, keycloak]);
 
     return (
         <SideBar>

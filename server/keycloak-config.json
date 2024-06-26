@@ -1,10 +1,10 @@
 {
-    "realm": "Keycloak-react-auth",
-    "auth-server-url": "http://127.0.0.1:8080/",
-    "ssl-required": "external",
-    "resource": "React-auth",
-    "public-client": true,
-    "verify-token-audience": true,
-    "use-resource-role-mappings": true,
-    "confidential-port": 0
-  }
+  "realm": "Keycloak-react-auth",
+  "auth-server-url": "http://127.0.0.1:8080/",
+  "ssl-required": "external",
+  "resource": "express-app",
+  "credentials": {
+    "secret": "0rVHk1j48P4mk4DclNY2gC1ekFvzgg27"
+  },
+  "confidential-port": 0
+}

@@ -4,9 +4,8 @@ import { FaSearch, FaHeart } from "react-icons/fa";
 import { CgUser } from "react-icons/cg";
 import { UserContext } from "../../Context/Context.js"
 import { MdPlaylistAdd } from "react-icons/md";
-import { BsChatDots } from "react-icons/bs";
-import { RiQuestionnaireFill } from "react-icons/ri";
 import { BiSolidDislike } from "react-icons/bi";
+import { useKeycloak } from "@react-keycloak/web";
 
 function NavBar() {
   const [search, setSearch] = useState("");
@@ -14,6 +13,7 @@ function NavBar() {
   const { userInfo } = useContext(UserContext)
   const hover = "hover:text-subMain transitions text-white";
   const Hover = ({ isActive }) => (isActive ? "text-subMain" : hover);
+  const { keycloak } = useKeycloak();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -77,17 +77,11 @@ function NavBar() {
             <NavLink to="/watchlist" className={`${Hover} relative`}>
                 <MdPlaylistAdd className="w-6 h-6"/>
             </NavLink>
-            {/* <NavLink to="/chats" className={`${Hover} relative`}>
-              <BsChatDots className="w-6 h-6" />
-            </NavLink> */}
-            {/* <NavLink to="/movieform" className={`${Hover} relative`}>
-              <RiQuestionnaireFill className="w-6 h-6" />
-            </NavLink> */}
             <NavLink
               to={
-                userInfo?.isAdmin
+                userInfo && keycloak.authenticated && keycloak.hasRealmRole("admin")
                   ? "/dashboard"
-                  : userInfo
+                  : userInfo && keycloak.authenticated
                   ? "/password"
                   : "/login"
               }

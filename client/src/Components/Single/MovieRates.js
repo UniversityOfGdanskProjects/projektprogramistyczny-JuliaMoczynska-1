@@ -60,7 +60,7 @@ function MovieRates({ movie }) {
         await reviewMovieAction({
           id: movie?._id,
           review: values,
-        }, createReviewDispatch, byIdMovieDispatch, keycloak.token);
+        }, createReviewDispatch, byIdMovieDispatch, userInfo);
 
         window.location.reload();
       } catch (error) {
@@ -124,7 +124,7 @@ function MovieRates({ movie }) {
           </div>
 
           {/* submit */}
-          {userInfo ? (
+          {userInfo && keycloak.authenticated ? (
             <button
               disabled={isLoading}
               type="submit"

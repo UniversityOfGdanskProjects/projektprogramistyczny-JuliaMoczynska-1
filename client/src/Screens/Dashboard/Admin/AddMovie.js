@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateMovieReducer } from "../../../Api/Movies/CreateMovie";
+import { UserContext } from "../../../Context/Context";
 import { useFormik } from "formik";
 import { movieValidation } from "../../../Components/Validation/MovieValidation";
 import { createMovieAction } from "../../../Api/Actions/MoviesActions";
@@ -10,7 +11,6 @@ import { Input, Message } from "../../../Components/UsedInputs";
 import { InlineError } from "../../../Components/Notfications/Error";
 import { useKeycloak } from "@react-keycloak/web";
 
-
 function AddMovie() {
     const [cast, setCast] = useState([]);
     const navigate = useNavigate();
@@ -19,6 +19,7 @@ function AddMovie() {
     const { isError, isSuccess } = createMovieState
 
 
+    const { userInfo } = useContext(UserContext)
     const { keycloak } = useKeycloak();
 
     const formik = useFormik({
@@ -38,7 +39,7 @@ function AddMovie() {
             createMovieAction({
                 ...values,
                 casts: cast
-              }, createMovieDispatch, keycloak)
+              }, createMovieDispatch, userInfo, keycloak)
             formik.resetForm();
             setCast([]);
         },

@@ -5,7 +5,8 @@ import { Input } from "../../Components/UsedInputs";
 import { PasswordValidation } from "../../Components/Validation/UserValidation";
 import SideBar from "./SideBar";
 import { useUserChangePasswordReducer } from "../../Api/User/ChangePassword";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../Context/Context";
 import { changePasswordAction } from "../../Api/Actions/UserActions";
 import { useKeycloak } from "@react-keycloak/web";
 
@@ -13,6 +14,8 @@ function Password() {
   const [newPasswordState, changePasswordDispatch] = useUserChangePasswordReducer();
 
   const { isLoading, isError, isSuccess, message } = newPasswordState;
+  const { userInfo } = useContext(UserContext)
+
   const { keycloak } = useKeycloak();
 
   const formik = useFormik({
@@ -23,7 +26,7 @@ function Password() {
     },
     validationSchema: PasswordValidation,
     onSubmit: (values) => {
-      changePasswordAction(values, changePasswordDispatch, keycloak.token);
+      changePasswordAction(values, changePasswordDispatch, userInfo, keycloak);
     },
   });
 

@@ -35,12 +35,13 @@ import { useUserDeleteFavoriteMoviesReducer } from "../../Api/User/DeleteFavorit
 import { useUserDeleteIgnoredMoviesReducer } from "../../Api/User/DeleteIgnoredMovies";
 import { useUserDeleteWatchlistReducer } from "../../Api/User/DeleteWatchlist";
 import { BiSolidDislike } from "react-icons/bi";
+
 import { useKeycloak } from "@react-keycloak/web";
 
 function SideBar({ children }) {
     const navigate = useNavigate();
-    const { userInfo, setUserInfo } = useContext(UserContext)
-    const { keycloak,  } = useKeycloak();
+    const { setUserInfo } = useContext(UserContext)
+    const { keycloak } = useKeycloak();
 
     const [, loginDispatch] = useLoginReducer();
     const [,registerDispatch] = useRegisterReducer();
@@ -61,6 +62,7 @@ function SideBar({ children }) {
     const [, createReviewDispatch] = useCreateReviewReducer();
     const [, createMovieDispatch] = useCreateMovieReducer();
     const [, updateMovieDispatch] = useUpdateMovieReducer();
+
 
     const logoutHandler = () => {
         logoutAction(
@@ -186,18 +188,12 @@ function SideBar({ children }) {
                                     </NavLink>
                                 ))}
                             </nav>
-
-                            {keycloak.authenticated ? (
-                                <button
-                                    onClick={logoutHandler}
-                                    className="flex items-center space-x-4 pt-4 text-white hover:text-subMain transition"
-                                >
-                                    <RiLogoutCircleLine className="text-xl" />
-                                    <span>Log Out</span>
-                                </button>
-                            ) : (
-                                <p className="text-center text-border"> You have no options, please log in first{" "}</p>
-                            )}
+                            <button
+                                onClick={logoutHandler}
+                                className="flex items-center space-x-4 pt-4 text-white hover:text-subMain transition"
+                            >
+                                <RiLogoutCircleLine className="text-xl"/> <span>Log Out</span>
+                            </button>
                         </div>
                         <div
                         data-aos="fade-up"

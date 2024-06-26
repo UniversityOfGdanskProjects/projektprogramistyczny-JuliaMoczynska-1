@@ -1,174 +1,71 @@
 import asyncHandler from "express-async-handler"
 import User from "../Models/UserModels.js"
 import bcrypt from "bcryptjs"
-// import keycloak from '../services/keycloak.js'
 import { generateToken } from "../middlewares/Auth.js"
-// import { registerUserInKeycloak } from '../services/keycloakService.js';
 
 // @desc Register user
 // @route POST /api/users/
 // @access Public
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullName, email, password, image } = req.body;
-
-  try {
-    // Sprawdzenie, czy użytkownik już istnieje w bazie danych lokalnej
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      res.status(400);
-      throw new Error("User already exists");
-    }
-
-    // Dane użytkownika do zarejestrowania w Keycloak
-    // const userData = {
-    //   username: fullName,
-    //   email: email,
-    //   enabled: true, 
-    //   credentials: [{
-    //     type: 'password',
-    //     value: password,
-    //     temporary: false
-    //   }],
-    // };
-
-    // Rejestracja użytkownika w Keycloak
-    // const keycloakUser = await registerUserInKeycloak(userData);
-
-    // Haszowanie hasła dla bazy danych lokalnej
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Zapis użytkownika w bazie danych lokalnej
-    const userDB = await User.create({
-      fullName,
-      email,
-      password: hashedPassword,
-      image,
-    });
-
-    // Odpowiedź z sukcesem
-    res.status(201).json({
-      _id: userDB._id,
-      fullName: userDB.fullName,
-      email: userDB.email,
-      isAdmin: userDB.isAdmin,
-      image: userDB.image,
-      // token: generateToken(userDB._id),
-    });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: "Server Error: " + error.message });
-  }
-});
-
-
-// const registerUser = asyncHandler(async (req, res) => {
-//     const {fullName, email, password, image} = req.body
-//     try {
-//         const userExists = await User.findOne({email})
-//         // check if user exists
-//         if (userExists) {
-//             res.status(400)
-//             throw new Error("User already exists")
-//         }
-//         //hash password        
-//         const salt = await bcrypt.genSalt(10);
-//         const hashedPassword = await bcrypt.hash(password, salt);
+    const {fullName, email, password, image} = req.body
+    try {
+        const userExists = await User.findOne({email})
+        // check if user exists
+        if (userExists) {
+            res.status(400)
+            throw new Error("User already exists")
+        }
+        //hash password        
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
         
-//         // create user in DB
-//         const user = await User.create({
-//             fullName,
-//             email,
-//             password: hashedPassword,
-//             image,
-//         });
+        // create user in DB
+        const user = await User.create({
+            fullName,
+            email,
+            password: hashedPassword,
+            image,
+        });
 
-//         // if user created successfully send user data and token client
-//         if (user) {
-//             res.status(201).json({
-//                 _id: user._id,
-//                 fullName: user.fullName,
-//                 email:user.email,
-//                 isAdmin: user.isAdmin,
-//                 image: user.image,
-//                 token: generateToken(user._id)
-//             });
-//         } else {
-//       res.status(400).json({ message: "Invalid user data" });
-//         }
-//     } catch (error) {
-//         res.status(500).json({ message: "Server Error" });
-//     }
-// })
+        // if user created successfully send user data and token client
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                fullName: user.fullName,
+                email:user.email,
+                isAdmin: user.isAdmin,
+                image: user.image,
+                token: generateToken(user._id)
+            });
+        } else {
+      res.status(400).json({ message: "Invalid user data" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
+    }
+})
 
 // @desc Login user 
 // @route POST /api/users/login
 // @access Public
 
-// const loginUser = asyncHandler(async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-//       const user = await User.findOne({ email });
-//       if (!user) {
-//           res.status(401);
-//           throw new Error("Invalid email or password");
-//       }
-
-//       keycloak.login({
-//           username: email,
-//           password: password,
-//       }, async function(err, userKeycloak) {
-//           if (err) {
-//               console.error('Błąd logowania:', err);
-//               res.status(500).json({ error: 'Internal Server Error' });
-//           } else {
-//               // Użytkownik został uwierzytelniony pomyślnie w Keycloak
-
-//               // Sprawdź, czy hasło użytkownika pasuje do hasła w bazie danych
-//               const passwordMatched = await bcrypt.compare(password, user.password);
-
-//               // Jeśli hasło się nie zgadza, zwróć błąd
-//               if (!passwordMatched) {
-//                   res.status(401);
-//                   throw new Error("Invalid email or password");
-//               }
-//               if (userKeycloak && (await bcrypt.compare(password, user.password))) {
-//                 // Zwróć dane użytkownika i token JWT z Keycloak
-//                 res.json({
-//                     _id: user._id,
-//                     fullName: user.fullName,
-//                     email: user.email,
-//                     isAdmin: user.isAdmin,
-//                     image: user.image,
-//                     // token: userKeycloak.access_token // Użyj tokena dostępu z Keycloak
-//                     token: generateToken(user._id)
-//                 });
-//               }
-//           }
-//       });
-//   } catch (error) {
-//       res.status(400).json({ message: error.message });
-//   }
-// });
-
 const loginUser = asyncHandler(async (req, res) => {
+  const {email, password } = req.body
     try {
         // find user in DB
-        const { email } = req.kauth.grant.access_token.content;
         const user = await User.findOne({ email });
-
-        if (user) {
+        // if user exists compare password with hashed password then send data and token to client
+        if (user && (await bcrypt.compare(password, user.password))) {
             res.json({
                 _id: user._id,
                 fullName: user.fullName,
                 email:user.email,
                 isAdmin: user.isAdmin,
                 image: user.image,
-                // token: generateToken(user._id)
+                token: generateToken(user._id)
             });
-        //if user not found or password not match send error message
+            //if user not found or password not match send error message
         } else {
             res.status(401);
             throw new Error("Invalid email or password");
@@ -185,10 +82,10 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access Private
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-    const { fullName, email, image } = req.body;
+    const { fullName, email, image, currentEmail } = req.body;
     try {
       // find user in DB
-      const user = await User.findById(req.user._id);
+      const user = await User.findById(currentEmail);
       // if user exists update user data and save it in DB
       if (user) {
         user.fullName = fullName || user.fullName;
@@ -202,8 +99,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
           fullName: updatedUser.fullName,
           email: updatedUser.email,
           image: updatedUser.image,
-          // isAdmin: updatedUser.isAdmin,
-          // token: generateToken(updatedUser._id),
+          isAdmin: updatedUser.isAdmin,
+          token: generateToken(updatedUser._id),
         });
       }
       // else send error message
@@ -280,7 +177,7 @@ const changeUserPassword = asyncHandler(async (req, res) => {
 const getLikedMovies = asyncHandler(async (req, res) => {
     try {
       // find user in DB
-      const user = await User.findById(req.user._id).populate("likedMovies");
+      const user = await User.findById(req.user.email).populate("likedMovies");
       // if user exists send liked movies to client
       if (user) {
         res.json(user.likedMovies);
@@ -299,10 +196,10 @@ const getLikedMovies = asyncHandler(async (req, res) => {
 // @route POST /api/users/favorites
 // @access Private
 const addLikedMovie = asyncHandler(async (req, res) => {
-    const { movieId } = req.body;
+    const { movieId, email } = req.body;
     try {
       // find user in DB
-      const user = await User.findById(req.user._id);
+      const user = await User.findById(email);
       // if user exists add movie to liked movies and save it in DB
       if (user) {
         // check if movie already liked

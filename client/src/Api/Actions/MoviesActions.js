@@ -49,11 +49,11 @@ export const getMovieByIdAction = async (id, dispatch) => {
   }
 };
 
-export const reviewMovieAction = async ({ id, review }, dispatch, byIdMovieDispatch, keycloak) => {
+export const reviewMovieAction = async ({ id, review }, dispatch, byIdMovieDispatch, getState, keycloak) => {
     try {
       dispatch({ type: "CREATE_REVIEW_REQUEST" });
       const response = await reviewMovieService(
-        tokenProtection(keycloak),
+        tokenProtection(getState, keycloak),
         id,
         review
       );
@@ -69,11 +69,11 @@ export const reviewMovieAction = async ({ id, review }, dispatch, byIdMovieDispa
     }
 };
 
-export const deleteMovieAction = async (id, dispatch, keycloak, navigate) => {
+export const deleteMovieAction = async (id, dispatch, getState, navigate, keycloak) => {
   try {
     dispatch({ type: "DELETE_MOVIE_REQUEST" });
     const response = await deleteMovieService(
-      tokenProtection(keycloak),
+      tokenProtection(getState, keycloak),
       id
     );
     dispatch({
@@ -87,11 +87,11 @@ export const deleteMovieAction = async (id, dispatch, keycloak, navigate) => {
   }
 };
 
-export const deleteAllMoviesAction =  async (dispatch, keycloak) => {
+export const deleteAllMoviesAction =  async (dispatch, getState, keycloak) => {
   try {
     dispatch({ type: "DELETE_ALL_MOVIES_REQUEST" });
     const response = await deleteAllMoviesService(
-      tokenProtection(keycloak)
+      tokenProtection(getState, keycloak)
     );
     dispatch({
       type: "DELETE_ALL_MOVIES_SUCCESS",
@@ -104,28 +104,29 @@ export const deleteAllMoviesAction =  async (dispatch, keycloak) => {
   }
 };
 
-export const createMovieAction = async (movie, dispatch, keycloak) => {
-  try {
-    dispatch({ type: "CREATE_MOVIE_REQUEST" });
-    const response = await createMovieService(
-      tokenProtection(keycloak),
-      movie
-    );
-    dispatch({
-      type: "CREATE_MOVIE_SUCCESS",
-      payload: response,
-    });
-    toast.success("Movie created successfully");
-  } catch (error) {
-    ErrorsAction(error, dispatch, "CREATE_MOVIE_FAIL");
-  }
+export const createMovieAction = async (movie, dispatch, getState, keycloak) => {
+    try {
+      dispatch({ type: "CREATE_MOVIE_REQUEST" });
+      const response = await createMovieService(
+        tokenProtection(getState, keycloak),
+        movie
+      );
+      dispatch({
+        type: "CREATE_MOVIE_SUCCESS",
+        payload: response,
+      });
+      toast.success("Movie created successfully");
+    } catch (error) {
+      ErrorsAction(error, dispatch, "CREATE_MOVIE_FAIL");
+    }
+  
 };
 
-export const updateMovieAction = async (id, movie, dispatch, moviebyiddispatch, keycloak) => {
+export const updateMovieAction = async (id, movie, dispatch, moviebyiddispatch, getState, keycloak) => {
   try {
     dispatch({ type: "UPDATE_MOVIE_REQUEST" });
     const response = await updateMovieService(
-      tokenProtection(keycloak),
+      tokenProtection(getState, keycloak),
       id,
       movie
     );

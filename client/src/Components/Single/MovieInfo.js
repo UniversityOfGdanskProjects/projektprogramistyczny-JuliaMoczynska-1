@@ -45,8 +45,8 @@ function MovieInfo({ movie }) {
                   </p>
                 </div>
                 {/* watch button */}
-                {/* <div className="sm:col-span-2 col-span-3 flex justify-end font-medium text-sm"> */}
-                {/* <a
+                <div className="sm:col-span-2 col-span-3 flex justify-end font-medium text-sm">
+                <a
                   href={movie?.video} 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -54,7 +54,7 @@ function MovieInfo({ movie }) {
                 >
                   <FaPlay className="w-3 h-3" /> Watch Trailer
                 </a>
-                // </div> */}
+                </div>
               </div>
               {/* ratings */}
               <div className="flex mb-6 text-lg gap-2 text-star">

@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import SideBar from "../SideBar";
+import { UserContext } from "../../../Context/Context";
 import { useAdminGetAllUsersReducer } from "../../../Api/Admin/AllUsers";
 import { useAdminDeleteUserReducer } from "../../../Api/Admin/DeleteUser";
 import { deleteUserAction, getAllUsersAction } from "../../../Api/Actions/UserActions";
 import Loader from "../../../Components/Notfications/Loader";
 import Table2 from "../../../Components/Table2";
 import { Empty } from "../../../Components/Notfications/Empty";
+import keycloak from "../../../Keycloak";
 import { useKeycloak } from "@react-keycloak/web";
 
 function Users() {
-    const { keycloak } = useKeycloak();
+
+    const { userInfo } = useContext(UserContext)
 
     const [ allUsersState, allUsersDispatch ] = useAdminGetAllUsersReducer();
     const { isLoading, isError, users } = allUsersState
@@ -17,19 +20,21 @@ function Users() {
     const [ deleteUserState, deleteUserDispatch ] = useAdminDeleteUserReducer();
     const { isError: deleteError, isSuccess } = deleteUserState
 
+    const { keycloakForAutentication } = useKeycloak();
+
     const deleteMoviesHandler = (id) => {
-        window.confirm("Are you sure you want to delete this user?") && deleteUserAction(id, deleteUserDispatch, keycloak);
+        window.confirm("Are you sure you want to delete this user?") && deleteUserAction(id, deleteUserDispatch, userInfo, keycloakForAutentication);
     };
 
     useEffect(() => {
-        getAllUsersAction(allUsersDispatch, keycloak);
+        getAllUsersAction(allUsersDispatch, userInfo, keycloakForAutentication, keycloak.token);
         if (isError){
             allUsersDispatch({ type: "GET_ALL_USERS_RESET"});
         }
         if (deleteError) {
             deleteUserDispatch({ type: "DELETE_USER_RESET"});
         }
-    }, [allUsersDispatch, deleteUserDispatch, keycloak, isError, deleteError, isSuccess]);
+    }, [allUsersDispatch, deleteUserDispatch, keycloakForAutentication, userInfo, isError, deleteError, isSuccess]);
 
     return (
         <SideBar>

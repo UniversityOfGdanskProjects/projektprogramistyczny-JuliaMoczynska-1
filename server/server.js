@@ -4,12 +4,10 @@ import dotenv from 'dotenv';
 import { connectDB } from "./config/db.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 import { Server } from 'socket.io';
-import cookies from 'react-cookies';
+import userRouter from "./Routes/UserRouter.js";
+import moviesRouter from "./Routes/MoviesRouter.js"
 import http from 'http';
 import mqtt from 'mqtt';
-import fs from 'fs';
-import userRouter from './Routes/UserRouter.js';
-import moviesRouter from './Routes/MoviesRouter.js';
 import { keycloak, memoryStore } from "./services/keycloak.js";
 import session from 'express-session';
 
@@ -30,6 +28,7 @@ app.use(session({
 
 app.use(keycloak.middleware({ logout: '/logout' }))
 
+
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
@@ -43,14 +42,6 @@ const PORT = process.env.PORT || 3001;
 
 const server = http.createServer(app);
 
-
-const io = new Server(server, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-});
-
 const mqttClient = mqtt.connect(process.env.MQTT_BROKER);
 
 mqttClient.on('connect', () => {
@@ -61,4 +52,3 @@ server.listen(PORT, ()  => {
   console.log(`Server running in http://localhost/${PORT}`);
 });
 
-export { keycloak };

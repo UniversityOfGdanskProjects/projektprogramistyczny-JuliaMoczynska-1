@@ -16,6 +16,9 @@ function Profile() {
   const [updateState, updateDispatch] = useUserUpdateProfileReducer();
   const { isLoading, isError, isSuccess } = updateState;
   const navigate = useNavigate();
+
+  const currentEmail =  userInfo.email
+  
   const { keycloak } = useKeycloak();
 
   const formik = useFormik({
@@ -26,7 +29,7 @@ function Profile() {
     },
     validationSchema: ProfileValidation,
     onSubmit: (values) => {
-      updateProfileAction({ ...values }, updateDispatch, userInfo, setUserInfo, keycloak.token);
+      updateProfileAction({ ...values, currentEmail}, updateDispatch, userInfo, setUserInfo, keycloak);
     },
   });
 

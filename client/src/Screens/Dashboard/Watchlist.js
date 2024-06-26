@@ -15,12 +15,12 @@ import { useKeycloak } from "@react-keycloak/web";
 
 function WatchList() {
     const navigate = useNavigate();
-    const { userInfo} = useContext(UserContext);
-    const { keycloak } = useKeycloak();
-
+    const { userInfo } = useContext(UserContext);
     //watchlist state
     const [watchListState, watchListDispatch] = useUserGetWatchlistReducer();
     const { isLoading, isError, watchList } = watchListState
+    
+    const { keycloak } = useKeycloak();
 
     //delete watchlist state
     const [deleteState, deleteDispatch] = useUserDeleteWatchlistReducer();
@@ -31,17 +31,17 @@ function WatchList() {
 
     // delete watchlist movies handler
     const deleteMoviesHandler = () => {
-        window.confirm("Are you sure you want to delete all movies from watchlist?") && deleteWatchlistAction(deleteDispatch, watchListDispatch, keycloak.token);
+        window.confirm("Are you sure you want to delete all movies from watchlist?") && deleteWatchlistAction(deleteDispatch, watchListDispatch, userInfo, keycloak);
     };
 
 
     // delete movie handler
     const deleteMovieHandler = (id) => {
-        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, keycloak.token, navigate);
+        window.confirm("Are you sure you want to delete this movie from database?") && deleteMovieAction(id, deleteOneMovieDispatch, userInfo, navigate, keycloak);
     };
 
     useEffect(() => {
-        getWachlistAction(watchListDispatch, keycloak.token);
+        getWachlistAction(watchListDispatch, userInfo, keycloak);
         if (isError ) {
             toast.error(isError);
             watchListDispatch({ type: "GET_WATCHLIST_RESET"  });
@@ -50,7 +50,7 @@ function WatchList() {
             toast.error(isError2);
             deleteDispatch({type: "DELETE_WATCHLIST_RESET"})
         }
-    }, [watchListDispatch, deleteDispatch, isError2, keycloak, isError]);
+    }, [watchListDispatch, deleteDispatch, keycloak, isError2, userInfo, isError]);
 
     return (
         <SideBar>
