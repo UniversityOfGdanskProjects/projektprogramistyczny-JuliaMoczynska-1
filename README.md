@@ -1,2 +1,6 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/wLNuUf9n)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=13288310&assignment_repo_type=AssignmentRepo)
+Julia Moczyńska
+
+Aplikacja bazy filmów, dzięki której użytkownicy mogą znaleść wybrany film wyszukując go po nazwie, ale także czasie trwania, języku, gatunku itd. Do każdego filmu można się odnieść pozostawiając po sobie ocene oraz recenzje. Dodatkowo użytkownicy posiadający role administratora mogą dodawać filmy, a co za tym idzie - jego informacje, plakaty oraz obsadę. Poza tym mają także zezwolenie na usuwanie poszczególnych użytkowników (tych bez roli administratora).
+
+w server --> npm install, npm start
+w client --> npm install, npm start
