@@ -142,7 +142,6 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 export { 
-    checkUserExists,
     registerUser,
     loginUser,
     deleteUserProfile, 
